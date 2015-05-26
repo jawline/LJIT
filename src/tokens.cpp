@@ -30,6 +30,11 @@ TOKEN_ID Token::id() const {
 }
 
 char const* Token::asString() const {
+	if (_id == INVALID_TOKEN) {
+		return "invalid";
+	} else if (_id == TOKEN_EOF) {
+		return "eof";
+	}
 	return _data.c_str();
 }
 
@@ -76,13 +81,15 @@ Token Tokeniser::peekToken(char const* input, size_t& len) {
 	} else if (strncmp(input, "(", 1) == 0) {
 		result = Token(LPAREN, input, 1);
 		len = 1;
-	} else if (strncmp(input, ")", 3) == 0) {
+	} else if (strncmp(input, ")", 1) == 0) {
 		result = Token(RPAREN, input, 1);
-		len = 3;
+		len = 1;
 	} else if ((len = nfaMatches(idRegex.start, input)) > 0) {
 		result = Token(ID, input, len);
 	} else if ((len = nfaMatches(intRegex.start, input)) > 0) {
 		result = Token(NUM, input, len);
+	} else {
+		printf("%s is invalid\n", input);
 	}
 
 	return result;

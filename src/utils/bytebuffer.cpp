@@ -29,6 +29,12 @@ void ByteBuffer::insert(uint8_t byte) {
 	bufferCurrentIter += 1;
 }
 
+void ByteBuffer::insert(uint8_t* data, size_t num) {
+	for (unsigned int i = 0; i < num; i++) {
+		insert(data[i]);
+	}
+}
+
 void ByteBuffer::insert(uint16_t word) {
 	if (bufferCurrentIter + sizeof(uint16_t) >= bufferCurrentSize) {
 		expandBuffer();

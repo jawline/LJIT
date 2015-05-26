@@ -13,6 +13,8 @@ namespace Assembler {
 		Tokeniser _tokeniser;
 
 		bool postParse(ByteBuffer& buffer);
+		bool parseAtom(char const*& input, ByteBuffer& buffer);
+		bool parseFunctionCall(char const*& input, ByteBuffer& buffer);
 		bool parseBlock(char const*& input, ByteBuffer& buffer);
 
 	public:
