@@ -50,7 +50,7 @@ char* readFromFile(char const* filename) {
 
 int main(int argc, char** argv) {
 
-	if (argc != 3) {
+	if (argc != 2) {
 		printf("Incorrect number of arguments\n");
 		return -1;
 	}
@@ -71,5 +71,5 @@ int main(int argc, char** argv) {
 	delete[] inputSource;
 
 	printf("Done writing %li bytes\n", buffer.current());
-	return writeToFile(buffer, argv[2]);
+	return 0;
 }
