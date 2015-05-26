@@ -9,8 +9,10 @@ namespace JIT {
 
 class JFunction {
 private:
+	int64_t _val;
+
 public:
-	JFunction(int x);
+	JFunction(int64_t x);
 	~JFunction();
 
 	void write(Assembler::ByteBuffer& buffer);

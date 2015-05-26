@@ -51,6 +51,13 @@ void ByteBuffer::insert(uint32_t num) {
 	bufferCurrentIter += sizeof(uint32_t);
 }
 
+void ByteBuffer::insert(int64_t num) {
+	if (bufferCurrentIter + sizeof(int64_t) >= bufferCurrentSize) {
+		expandBuffer();
+	}
+	insert(num, bufferCurrentIter);
+	bufferCurrentIter += sizeof(int64_t);
+}
 
 void ByteBuffer::insert(uint8_t byte, size_t at) {
 	buffer[at] = byte;
@@ -62,6 +69,10 @@ void ByteBuffer::insert(uint16_t word, size_t at) {
 
 void ByteBuffer::insert(uint32_t num, size_t at) {
 	*((uint32_t*)&buffer[at]) = num;
+}
+
+void ByteBuffer::insert(int64_t num, size_t at) {
+	*((int64_t*)&buffer[at]) = num;
 }
 
 uint8_t* ByteBuffer::raw() const {
