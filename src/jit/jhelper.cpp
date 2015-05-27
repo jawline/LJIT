@@ -24,10 +24,18 @@ void Helper::pushNumber(int64_t value, ByteBuffer& buffer) {
 }
 
 void Helper::addTopTwoStack(ByteBuffer& buffer) {
+    
     //pop RCX
+    buffer.insert((uint8_t)0x59);
+    
     //pop RAX
+    buffer.insert((uint8_t)0x58);
+    
     //add RCX, RAX
+    buffer.insert((uint8_t*){0x48, 0x01, 0xC8}, 3);
+    
     //push RAX
+    buffer.insert((uint8_t)0x50);
 }
 
 JFPTR Helper::prepareFunctionPointer(ByteBuffer const& buffer) {
