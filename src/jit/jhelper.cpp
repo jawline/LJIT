@@ -8,7 +8,6 @@ using namespace JIT;
 using namespace Assembler;
 
 void Helper::pushBasicResult(ByteBuffer& buffer) {
-    //Convention, basic (atom, add, sub, mul, div) results go to RAX on intel64
     //push RAX
     buffer.insert((uint8_t)0x50);
 }
