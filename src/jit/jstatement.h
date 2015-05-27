@@ -5,8 +5,8 @@
 namespace JIT {
   class Statement {
   private:
-    int64_t val;
-    bool add;
+    int64_t _val;
+    bool _add;
   public:
     Statement(int64_t val);
     void write(ByteBuffer& buffer);
