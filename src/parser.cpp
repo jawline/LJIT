@@ -10,7 +10,10 @@ Parser::~Parser() {}
 
 JIT::SafeStatement Parser::parseAtom(char const*& input) {
 	Token next = _tokeniser.nextToken(input);
-	return next.id() == NUM;
+	if (next.id() != NUM) {
+		return nullptr;
+	}
+	return JIT::SafeStatement(new JIT::Statement(next.asInt()));
 }
 
 JIT::SafeStatement Parser::parseFunctionCall(char const*& input) {
