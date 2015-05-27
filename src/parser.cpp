@@ -1,6 +1,7 @@
 #include "parser.h"
 #include <CoreVM/instructions.h>
 #include <CoreVM/registers.h>
+#include <vector>
 #include <stdio.h>
 
 using namespace Assembler;
@@ -23,28 +24,50 @@ JIT::SafeStatement Parser::parseFunctionCall(char const*& input) {
 
 	string name = next.asString();
 
-	int args = 0;
+	std::vector<SafeStatement> args;
 
 	while (true) {
 		next = _tokeniser.peekToken(input);
 		
 		if (next.id() == LPAREN) {
-			if (!parseBlock(input, buffer)) {
+			SafeStatement next = parseBlock(input, buffer);
+			if (!next) {
 				return nullptr;
 			}
+			args.push_back(next);
 		} else if (next.id() == NUM) {
-			if (!parseAtom(input, buffer)) {
+			SafeStatement next = parseAtom(input, buffer);
+			if (!next) {
 				return nullptr;
 			}
+			args.push_back(next);
 		} else {
 			break;
 		}
-
-		args++;
+	}
+	
+	JIT::StatementType type;
+	
+	if (name.compare("add") == 0) {
+		type = JIT::Add;
+	} else if (name.compare("sub") == 0) {
+		type = JIT::Subtract;
+	} else if (name.compare("mul") == 0) {
+		type = JIT::Multiply;
+	} else if (name.compare("div") == 0) {
+		type = JIT::Divide;
+	} else {
+		printf("%s not a valid call\n", name.c_str());
+		return nullptr;
+	}
+	
+	if (args.size() != 2) {
+		printf("Expected 2 args\n");
+		return nullptr;
 	}
 
-	printf("call %s: %i args\n", name.c_str(), args);
-	return true;
+	printf("call %s: %i args\n", name.c_str(), args.size());
+	return JIT::SafeStatement(new JIT::Statement(type, args[0], args[1]));
 }
 
 JIT::SafeStatement Parser::parseBlock(char const*& input) {
