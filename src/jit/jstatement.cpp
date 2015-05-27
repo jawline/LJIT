@@ -8,10 +8,19 @@ Statement::Statement(int64_t val) {
   _val = val;
 }
 
+Statement::Statement(StatementType type, SafeStatement lhs) {
+  _type = type;
+  _lhs = lhs;
+}
+
 Statement::Statement(StatementType type, SafeStatement lhs, SafeStatement rhs) {
   _type = type;
   _lhs = lhs;
   _rhs = rhs;
+}
+
+void Do() {
+  printf("I DO\n");
 }
 
 void Statement::write(Assembler::ByteBuffer& buffer) {
@@ -38,6 +47,10 @@ void Statement::write(Assembler::ByteBuffer& buffer) {
       _lhs->write(buffer);
       _rhs->write(buffer);
       Helper::divTopTwoStack(buffer);
+      break;
+    case Set:
+      printf("SET\n");
+      Helper::callFunction((void*) Do, buffer);
       break;
     default:
       printf("Could not JIT\n");

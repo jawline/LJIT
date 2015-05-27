@@ -46,27 +46,42 @@ SafeStatement Parser::parseFunctionCall(char const*& input) {
 	}
 	
 	StatementType type;
+
+	int numExpectedArgs;
 	
 	if (name.compare("add") == 0) {
 		type = Add;
+		numExpectedArgs = 2;
 	} else if (name.compare("sub") == 0) {
 		type = Subtract;
+		numExpectedArgs = 2;
 	} else if (name.compare("mul") == 0) {
 		type = Multiply;
+		numExpectedArgs = 2;
 	} else if (name.compare("div") == 0) {
 		type = Divide;
+		numExpectedArgs = 2;
+	} else if (name.compare("set") == 0) {
+		type = Set;
+		numExpectedArgs = 2;
+	} else if (name.compare("get") == 0) {
+		type = Get;
+		numExpectedArgs = 1;
 	} else {
 		printf("%s not a valid call\n", name.c_str());
 		return nullptr;
 	}
 	
-	if (args.size() != 2) {
-		printf("Expected 2 args\n");
+	if (args.size() != numExpectedArgs) {
+		printf("Expected %i args got %li\n", numExpectedArgs, args.size());
 		return nullptr;
 	}
 
-	printf("call %s: %i args\n", name.c_str(), args.size());
-	return SafeStatement(new Statement(type, args[0], args[1]));
+	if (numExpectedArgs == 2) {
+		return SafeStatement(new Statement(type, args[0], args[1]));
+	} else {
+		return SafeStatement(new Statement(type, args[0]));
+	}
 }
 
 SafeStatement Parser::parseBlock(char const*& input) {

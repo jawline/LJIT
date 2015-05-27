@@ -27,6 +27,21 @@ void Helper::insertEpilogue(ByteBuffer& buffer) {
     buffer.insert(Template::epilogue, Template::epilogueSize());
 }
 
+void Helper::loadAddress(void* address, ByteBuffer& buffer) {
+    //mov _val, RAX
+    uint8_t mrax[] = { 0x48, 0xB8 };
+    buffer.insert(mrax, sizeof(mrax));
+    buffer.insert((int64_t) address);
+}
+
+void Helper::callFunction(void* fnPtr, ByteBuffer& buffer) {
+    loadAddress(fnPtr, buffer);
+
+    //call rax
+    uint8_t crax[] = {0xFF, 0xD0};
+    buffer.insert(crax, sizeof(crax));
+}
+
 void Helper::pushNumber(int64_t value, ByteBuffer& buffer) {
     //mov _val, RAX
     uint8_t mrax[] = { 0x48, 0xB8 };
