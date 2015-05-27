@@ -9,6 +9,7 @@ namespace JIT {
   
   class Helper {
   private:
+    static void pushBasicResult(ByteBuffer& buffer);
     static void popTwo(ByteBuffer& buffer);
 
   public:
