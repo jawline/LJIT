@@ -5,6 +5,19 @@
 
 using namespace JIT;
 
+void Helper::pushBasicResult(ByteBuffer& buffer) {
+    //Convention, basic (atom, add, sub, mul, div) results go to RAX on intel64
+    //push RAX
+    buffer.insert((uint8_t)0x50);
+}
+
+void Helper::popTwo(ByteBuffer& buffer) {
+    //pop RCX
+    buffer.insert((uint8_t)0x59);
+    //pop RAX
+    buffer.insert((uint8_t)0x58);
+}
+
 void Helper::insertPrologue(ByteBuffer& buffer) {
     buffer.insert(Template::prologue, sizeof(Template::prologue));
 }
@@ -18,24 +31,21 @@ void Helper::pushNumber(int64_t value, ByteBuffer& buffer) {
     uint8_t mrax[2] = { 0x48, 0xB8 };
     buffer.insert(mrax, 2);
     buffer.insert((int64_t) _val);
-    
-    //push RAX
-    buffer.insert((uint8_t)0x50);
+
+    //push rax
+    pushBasicResult(buffer);
 }
 
 void Helper::addTopTwoStack(ByteBuffer& buffer) {
     
-    //pop RCX
-    buffer.insert((uint8_t)0x59);
-    
-    //pop RAX
-    buffer.insert((uint8_t)0x58);
+    //pop rcx; pop rax
+    popTwo(buffer);
     
     //add RCX, RAX
     buffer.insert((uint8_t*){0x48, 0x01, 0xC8}, 3);
     
-    //push RAX
-    buffer.insert((uint8_t)0x50);
+    //push rax
+    pushBasicResult(buffer);
 }
 
 JFPTR Helper::prepareFunctionPointer(ByteBuffer const& buffer) {
