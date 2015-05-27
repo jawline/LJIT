@@ -9,7 +9,7 @@ JFunction::~JFunction() {}
 
 void JFunction::write(Assembler::ByteBuffer& buffer) {
 
-	//mov RAX, 0xFFFFFFFF
+	//mov RAX, _val
 	uint8_t mrax[2] = { 0x48, 0xB8 };
 	buffer.insert(mrax, 2);
 	buffer.insert((int64_t) _val);
