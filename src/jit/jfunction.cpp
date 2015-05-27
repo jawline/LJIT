@@ -3,7 +3,7 @@
 
 using namespace JIT;
 
-JFunction::JFunction(Statement stmt) {
+JFunction::JFunction(SafeStatement const& stmt) {
   prepare(stmt);
 }
 
@@ -11,11 +11,11 @@ JFunction::~JFunction() {
   Helper::freeFunctionPointer(_storedFn, _fnSize);
 }
 
-void JFunction::prepare(Statement const& stmt) {
+void JFunction::prepare(SafeStatement const& stmt) {
   ByteBuffer buffer;
 
   Helper::insertPrologue(buffer);
-  stmt.write(buffer);
+  stmt->write(buffer);
   Helper::insertEpilogue(buffer);
   
   _storedFn = Helper::prepareFunctionPointer(buffer);
