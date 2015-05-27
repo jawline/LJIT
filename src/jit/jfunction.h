@@ -3,14 +3,12 @@
 #include "../utils/bytebuffer.h"
 
 namespace JIT {
-
-class JFunction {
-private:
-public:
-	JFunction(JStatement stmt);
-	~JFunction();
-};
-
+	class JFunction {
+	private:
+	public:
+		JFunction(JStatement stmt);
+		~JFunction();
+	};
 }
 
 #endif //_JIT_FUNCTION_DEF_H_
