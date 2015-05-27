@@ -14,7 +14,7 @@ namespace JIT {
     static void pushNumber(int64_t value, ByteBuffer& buffer);
     static void addTopTwoStack(ByteBuffer& buffer);
     static JFPTR prepareFunctionPointer(ByteBuffer const& buffer);
-    static void freeFunctionPointer(JFPTR ptr);
+    static void freeFunctionPointer(JFPTR ptr, size_t size);
   };
 }
 
