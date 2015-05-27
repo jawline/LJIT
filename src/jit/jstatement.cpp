@@ -7,6 +7,16 @@ Statement::Statement(int64_t val) {
   _val = val;
 }
 
+Statement::Statement(SafeStatement lhs, SafeStatement rhs) {
+  _lhs = lhs;
+  _rhs = rhs;
+  _add = true;
+}
+
 void Statement::write(ByteBuffer& buffer) {
-  Helper::pushNumber(_val);
+  if (_add) {
+    Helper::addTopTwoStack(buffer);
+  } else {
+    Helper::pushNumber(_val);
+  }
 }
