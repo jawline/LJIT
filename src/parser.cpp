@@ -8,16 +8,12 @@ using namespace Assembler;
 Parser::Parser() {}
 Parser::~Parser() {}
 
-bool Parser::postParse(ByteBuffer& buffer) {
-	return true;
-}
-
-bool Parser::parseAtom(char const*& input, ByteBuffer& buffer) {
+JIT::SafeStatement Parser::parseAtom(char const*& input) {
 	Token next = _tokeniser.nextToken(input);
 	return next.id() == NUM;
 }
 
-bool Parser::parseFunctionCall(char const*& input, ByteBuffer& buffer) {
+JIT::SafeStatement Parser::parseFunctionCall(char const*& input) {
 
 	//Get function call name
 	Token next = _tokeniser.nextToken(input);
@@ -48,7 +44,7 @@ bool Parser::parseFunctionCall(char const*& input, ByteBuffer& buffer) {
 	return true;
 }
 
-bool Parser::parseBlock(char const*& input, ByteBuffer& buffer) {
+JIT::SafeStatement Parser::parseBlock(char const*& input) {
 
 	//Discard lparen
 	Token next = _tokeniser.nextToken(input);
@@ -77,7 +73,7 @@ bool Parser::parseBlock(char const*& input, ByteBuffer& buffer) {
 	return true;
 }
 
-bool Parser::parse(char const* input, ByteBuffer& buffer) {
+bool Parser::parse(char const* input) {
 	
 	Token next = _tokeniser.peekToken(input);
 
@@ -89,10 +85,15 @@ bool Parser::parse(char const* input, ByteBuffer& buffer) {
 		printf("Expected LPAREN\n");
 		return false;
 	}
-
-	if (!parseBlock(input, buffer)) {
+	
+	SafeStatement block = parseBlock(input, buffer);
+	
+	if (!block) {
 		return false;
 	}
+
+	JIT::JFunction fn = JIT::JFunction(block);
+	printf("%i\n", fn.run());
 	
 	return parse(input, buffer);
 }
