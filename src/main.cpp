@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
 		)
 	);
 
-	fn.run();
+	printf("%i\n", fn.run());
 
 /*
 	char* inputSource = readFromFile(argv[1]);
