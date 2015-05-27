@@ -112,6 +112,6 @@ bool Parser::parse(char const* input) {
 	SafeStatement block = parseBlock(input, buffer);
 	CHECK(block);
 	JIT::JFunction fn = JIT::JFunction(block);
-	printf("%i\n", fn.run());
+	printf("Line Result: %i\n", fn.run());
 	return parse(input, buffer);
 }
