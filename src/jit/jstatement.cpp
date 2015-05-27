@@ -8,4 +8,5 @@ Statement::Statement(int64_t val) {
 }
 
 void Statement::write(ByteBuffer& buffer) {
+  Helper::pushNumber(_val);
 }
