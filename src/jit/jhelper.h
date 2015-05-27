@@ -8,6 +8,9 @@ namespace JIT {
   typedef int64_t (*JFPTR)();
   
   class Helper {
+  private:
+    static void popTwo(ByteBuffer& buffer);
+
   public:
     static void insertPrologue(ByteBuffer& buffer);
     static void insertEpilogue(ByteBuffer& buffer);
