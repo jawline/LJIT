@@ -32,25 +32,33 @@ void Helper::pushNumber(int64_t value, ByteBuffer& buffer) {
     buffer.insert(mrax, 2);
     buffer.insert((int64_t) _val);
 
-    //push rax
     pushBasicResult(buffer);
 }
 
 void Helper::addTopTwoStack(ByteBuffer& buffer) {
-    //pop rcx; pop rax
     popTwo(buffer);
+    
     //add RCX, RAX
     buffer.insert((uint8_t*){0x48, 0x01, 0xC8}, 3);
-    //push rax
+    
     pushBasicResult(buffer);
 }
 
 void Helper::subTopTwoStack(ByteBuffer& buffer) {
-    //pop rcx; pop rax
     popTwo(buffer);
+    
     //sub RCX, RAX
     buffer.insert((uint8_t*){0x48, 0x29, 0xC8}, 3);
-    //push rax
+    
+    pushBasicResult(buffer);   
+}
+
+void Helper::mulTopTwoStack(ByteBuffer& buffer) {
+    popTwo(buffer);
+    
+    //mul rcx
+    buffer.insert((uint8_t*){0x48, 0xF7, 0xE1}, 3);
+    
     pushBasicResult(buffer);   
 }
 
