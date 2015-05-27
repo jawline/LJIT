@@ -19,8 +19,14 @@ Statement::Statement(StatementType type, SafeStatement lhs, SafeStatement rhs) {
   _rhs = rhs;
 }
 
-void Do() {
-  printf("I DO\n");
+int64_t ScopeSetFn(int64_t id, int64_t val) {
+  printf("If I knew how I would set %li to %li on the current scope\n", id, val);
+  return val;
+}
+
+int64_t ScopeGetFn(int64_t id) {
+  printf("If I knew how I would get %li from the current scope\n", id);
+  return 0;
 }
 
 void Statement::write(Assembler::ByteBuffer& buffer) {
@@ -49,8 +55,16 @@ void Statement::write(Assembler::ByteBuffer& buffer) {
       Helper::divTopTwoStack(buffer);
       break;
     case Set:
-      printf("SET\n");
-      Helper::callFunction((void*) Do, buffer);
+      _lhs->write(buffer);
+      _rhs->write(buffer);
+      Helper::setArgumentStackTop(1, buffer);
+      Helper::setArgumentStackTop(0, buffer);
+      Helper::callFunction((void*) ScopeSetFn, buffer);
+      break;
+    case Get:
+      _lhs->write(buffer);
+      Helper::setArgumentStackTop(0, buffer);
+      Helper::callFunction((void*) ScopeGetFn, buffer);
       break;
     default:
       printf("Could not JIT\n");

@@ -2,6 +2,7 @@
 #include "jtemplate.h"
 #include <string.h>
 #include <sys/mman.h>
+#include <stdio.h>
 
 using namespace JIT;
 using namespace Assembler;
@@ -40,6 +41,8 @@ void Helper::callFunction(void* fnPtr, ByteBuffer& buffer) {
     //call rax
     uint8_t crax[] = {0xFF, 0xD0};
     buffer.insert(crax, sizeof(crax));
+
+    pushBasicResult(buffer);
 }
 
 void Helper::pushNumber(int64_t value, ByteBuffer& buffer) {
@@ -89,6 +92,44 @@ void Helper::divTopTwoStack(ByteBuffer& buffer) {
     buffer.insert(divRcx, sizeof(divRcx));
     
     pushBasicResult(buffer);   
+}
+
+void Helper::setArgument(unsigned int num, int64_t val, Assembler::ByteBuffer& buffer) {
+    switch (num) {
+        case 0: {
+            uint8_t movRdi[] = { 0x48, 0xBF };
+            buffer.insert(movRdi, sizeof(movRdi));
+            buffer.insert(val);
+            break;
+        }
+        case 1: {
+            uint8_t movRdi[] = { 0x48, 0xBE };
+            buffer.insert(movRdi, sizeof(movRdi));
+            buffer.insert(val);
+            break;            
+        }
+        default:
+            printf("UNSUPPORTED ARG NUM\n");
+            return;
+    }
+}
+
+void Helper::setArgumentStackTop(unsigned int num, Assembler::ByteBuffer& buffer) {
+    switch (num) {
+        case 0: {
+            //pop rdi
+            buffer.insert((uint8_t)0x5F);
+            break;
+        }
+        case 1: {
+            //pop rsi
+            buffer.insert((uint8_t)0x5E);
+            break;            
+        }
+        default:
+            printf("UNSUPPORTED ARG NUM\n");
+            return;
+    }
 }
 
 JFPTR Helper::prepareFunctionPointer(ByteBuffer const& buffer) {

@@ -1,1 +1,2 @@
-(set 4 10)
+(add (set 4 10) 20)
+(add (add (get 4) (get 4)) 25)

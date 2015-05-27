@@ -18,6 +18,8 @@ namespace JIT {
     static void insertEpilogue(Assembler::ByteBuffer& buffer);
     static void pushNumber(int64_t value, Assembler::ByteBuffer& buffer);
     static void callFunction(void* fnPtr, Assembler::ByteBuffer& buffer);
+    static void setArgument(unsigned int num, int64_t val, Assembler::ByteBuffer& buffer);
+    static void setArgumentStackTop(unsigned int num, Assembler::ByteBuffer& buffer);
     static void addTopTwoStack(Assembler::ByteBuffer& buffer);
     static void subTopTwoStack(Assembler::ByteBuffer& buffer);
     static void mulTopTwoStack(Assembler::ByteBuffer& buffer);
