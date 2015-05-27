@@ -30,11 +30,11 @@ JIT::SafeStatement Parser::parseFunctionCall(char const*& input) {
 		
 		if (next.id() == LPAREN) {
 			if (!parseBlock(input, buffer)) {
-				return false;
+				return nullptr;
 			}
 		} else if (next.id() == NUM) {
 			if (!parseAtom(input, buffer)) {
-				return false;
+				return nullptr;
 			}
 		} else {
 			break;
@@ -52,28 +52,29 @@ JIT::SafeStatement Parser::parseBlock(char const*& input) {
 	//Discard lparen
 	Token next = _tokeniser.nextToken(input);
 	next = _tokeniser.peekToken(input);
+	SafeStatement result;
 
 	if (next.id() == ID) {
-		if (!parseFunctionCall(input, buffer)) {
-			return false;
-		}
+		result = parseFunctionCall(input, buffer);
 	} else if (next.id() == NUM) {
-		if (!parseAtom(input, buffer)) {
-			return false;
-		}
+		result = parseAtom(input, buffer);
 	} else {
 		printf("Expected ID or NUM in block\n");
-		return false;
+		result = nullptr;
+	}
+
+	if (!result) {
+		return nullptr;
 	}
 
 	next = _tokeniser.nextToken(input);
 
 	if (next.id() != RPAREN) {
 		printf("Expected RPAREN got %s\n", next.asString());
-		return false;
+		return nullptr;
 	}
 
-	return true;
+	return result;
 }
 
 bool Parser::parse(char const* input) {
