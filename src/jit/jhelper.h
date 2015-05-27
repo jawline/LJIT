@@ -4,12 +4,17 @@
 #include "../utils/bytebuffer.h"
 
 namespace JIT {
+  
+  typedef int64_t (*JFPTR)();
+  
   class Helper {
   public:
     static void insertPrologue(ByteBuffer& buffer);
     static void insertEpilogue(ByteBuffer& buffer);
     static void pushNumber(int64_t value, ByteBuffer& buffer);
     static void addTopTwoStack(ByteBuffer& buffer);
+    static JFPTR prepareFunctionPointer(ByteBuffer const& buffer);
+    static void freeFunctionPointer(JFPTR ptr);
   };
 }
 
