@@ -22,6 +22,9 @@ void Statement::write(ByteBuffer& buffer) {
     case Add:
       Helper::addTopTwoStack(buffer);
       break;
+    case Subtract:
+      Helper::subTopTwoStack(buffer);
+      break;
     default:
       printf("Could not JIT\n");
       break;
