@@ -55,12 +55,7 @@ int main(int argc, char** argv) {
 		printf("Incorrect number of arguments\n");
 		return -1;
 	}
-	
-	auto fn = JIT::JFunction(JIT::SafeStatement(new JIT::Statement(-500)));
 
-	printf("%li\n", fn.run());
-
-/*
 	char* inputSource = readFromFile(argv[1]);
 
 	if (!inputSource) {
@@ -68,15 +63,12 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 
-	Assembler::ByteBuffer buffer;
 	Assembler::Parser parser;
-	if (!parser.parse(inputSource, buffer)) {
+	if (!parser.parse(inputSource)) {
 		return -1;
 	}
 
 	delete[] inputSource;
 
-	printf("Done writing %li bytes\n", buffer.current());
-*/
 	return 0;
 }
