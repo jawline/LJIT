@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "jit/jfunction.h"
 #include "utils/bytebuffer.h"
 #include "parser.h"
 
@@ -54,7 +55,11 @@ int main(int argc, char** argv) {
 		printf("Incorrect number of arguments\n");
 		return -1;
 	}
+	
+	auto fn = JIT::JFunction(JIT::Statement(JIT::SafeStatement(new JIT::Statement(5)), JIT::SafeStatement(new JIT::Statement(6))));
+	fn.run();
 
+/*
 	char* inputSource = readFromFile(argv[1]);
 
 	if (!inputSource) {
@@ -71,5 +76,6 @@ int main(int argc, char** argv) {
 	delete[] inputSource;
 
 	printf("Done writing %li bytes\n", buffer.current());
+*/
 	return 0;
 }
