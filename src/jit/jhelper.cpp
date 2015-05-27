@@ -37,15 +37,21 @@ void Helper::pushNumber(int64_t value, ByteBuffer& buffer) {
 }
 
 void Helper::addTopTwoStack(ByteBuffer& buffer) {
-    
     //pop rcx; pop rax
     popTwo(buffer);
-    
     //add RCX, RAX
     buffer.insert((uint8_t*){0x48, 0x01, 0xC8}, 3);
-    
     //push rax
     pushBasicResult(buffer);
+}
+
+void Helper::subTopTwoStack(ByteBuffer& buffer) {
+    //pop rcx; pop rax
+    popTwo(buffer);
+    //sub RCX, RAX
+    buffer.insert((uint8_t*){0x48, 0x29, 0xC8}, 3);
+    //push rax
+    pushBasicResult(buffer);   
 }
 
 JFPTR Helper::prepareFunctionPointer(ByteBuffer const& buffer) {
