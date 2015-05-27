@@ -21,3 +21,7 @@ void JFunction::prepare(Statement const& stmt) {
   _storedFn = Helper::prepareFunctionPointer(buffer);
   _fnSize = buffer.current();
 }
+
+int64_t JFunction::run() {
+  return _storedFn();
+}
