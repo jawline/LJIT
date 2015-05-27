@@ -1,1 +1,1 @@
-(print 5 (add 5 4))
+(mul (add 5 5) (sub 10 (add 3 2)))
