@@ -9,6 +9,7 @@ namespace JIT {
     static void insertPrologue(ByteBuffer& buffer);
     static void insertEpilogue(ByteBuffer& buffer);
     static void pushNumber(int64_t value, ByteBuffer& buffer);
+    static void addTopTwoStack(ByteBuffer& buffer);
   };
 }
 
