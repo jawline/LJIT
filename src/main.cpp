@@ -56,16 +56,9 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 	
-	auto fn = JIT::JFunction(
-		JIT::SafeStatement(
-			new JIT::Statement(JIT::Add,
-				JIT::SafeStatement(new JIT::Statement(5)),
-				JIT::SafeStatement(new JIT::Statement(6))
-			)
-		)
-	);
+	auto fn = JIT::JFunction(JIT::SafeStatement(new JIT::Statement(-500)));
 
-	printf("%i\n", fn.run());
+	printf("%li\n", fn.run());
 
 /*
 	char* inputSource = readFromFile(argv[1]);

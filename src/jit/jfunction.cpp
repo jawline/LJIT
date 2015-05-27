@@ -2,6 +2,7 @@
 #include "jhelper.h"
 
 using namespace JIT;
+using namespace Assembler;
 
 JFunction::JFunction(SafeStatement const& stmt) {
   prepare(stmt);
@@ -22,6 +23,6 @@ void JFunction::prepare(SafeStatement const& stmt) {
   _fnSize = buffer.current();
 }
 
-int64_t JFunction::run() {
+int64_t JFunction::run() const {
   return _storedFn();
 }

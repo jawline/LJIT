@@ -5,21 +5,22 @@
 #include <stdio.h>
 
 using namespace Assembler;
+using namespace JIT;
 
 Parser::Parser() {}
 Parser::~Parser() {}
 
 #define CHECK(x) if (!x) { return nullptr; }
 
-JIT::SafeStatement Parser::parseAtom(char const*& input) {
+SafeStatement Parser::parseAtom(char const*& input) {
 	Token next = _tokeniser.nextToken(input);
 	if (next.id() != NUM) {
 		return nullptr;
 	}
-	return JIT::SafeStatement(new JIT::Statement(next.asInt()));
+	return SafeStatement(new Statement(next.asInt()));
 }
 
-JIT::SafeStatement Parser::parseFunctionCall(char const*& input) {
+SafeStatement Parser::parseFunctionCall(char const*& input) {
 
 	//Get function call name
 	Token next = _tokeniser.nextToken(input);
@@ -32,11 +33,11 @@ JIT::SafeStatement Parser::parseFunctionCall(char const*& input) {
 		next = _tokeniser.peekToken(input);
 		
 		if (next.id() == LPAREN) {
-			SafeStatement arg = parseBlock(input, buffer);
+			SafeStatement arg = parseBlock(input);
 			CHECK(arg);
 			args.push_back(arg);
 		} else if (next.id() == NUM) {
-			SafeStatement arg = parseAtom(input, buffer);
+			SafeStatement arg = parseAtom(input);
 			CHECK(arg);
 			args.push_back(arg);
 		} else {
@@ -44,16 +45,16 @@ JIT::SafeStatement Parser::parseFunctionCall(char const*& input) {
 		}
 	}
 	
-	JIT::StatementType type;
+	StatementType type;
 	
 	if (name.compare("add") == 0) {
-		type = JIT::Add;
+		type = Add;
 	} else if (name.compare("sub") == 0) {
-		type = JIT::Subtract;
+		type = Subtract;
 	} else if (name.compare("mul") == 0) {
-		type = JIT::Multiply;
+		type = Multiply;
 	} else if (name.compare("div") == 0) {
-		type = JIT::Divide;
+		type = Divide;
 	} else {
 		printf("%s not a valid call\n", name.c_str());
 		return nullptr;
@@ -65,10 +66,10 @@ JIT::SafeStatement Parser::parseFunctionCall(char const*& input) {
 	}
 
 	printf("call %s: %i args\n", name.c_str(), args.size());
-	return JIT::SafeStatement(new JIT::Statement(type, args[0], args[1]));
+	return SafeStatement(new Statement(type, args[0], args[1]));
 }
 
-JIT::SafeStatement Parser::parseBlock(char const*& input) {
+SafeStatement Parser::parseBlock(char const*& input) {
 
 	//Discard lparen
 	Token next = _tokeniser.nextToken(input);
@@ -76,9 +77,9 @@ JIT::SafeStatement Parser::parseBlock(char const*& input) {
 	SafeStatement result;
 
 	if (next.id() == ID) {
-		result = parseFunctionCall(input, buffer);
+		result = parseFunctionCall(input);
 	} else if (next.id() == NUM) {
-		result = parseAtom(input, buffer);
+		result = parseAtom(input);
 	} else {
 		printf("Expected ID or NUM in block\n");
 		result = nullptr;
@@ -101,7 +102,7 @@ bool Parser::parse(char const* input) {
 	Token next = _tokeniser.peekToken(input);
 
 	if (next.id() == TOKEN_EOF) {
-		return postParse(buffer);
+		return true;
 	}
 
 	if (next.id() != LPAREN) {
@@ -109,9 +110,9 @@ bool Parser::parse(char const* input) {
 		return false;
 	}
 	
-	SafeStatement block = parseBlock(input, buffer);
+	SafeStatement block = parseBlock(input);
 	CHECK(block);
-	JIT::JFunction fn = JIT::JFunction(block);
-	printf("Line Result: %i\n", fn.run());
-	return parse(input, buffer);
+	JFunction fn = JFunction(block);
+	printf("Line Result: %li\n", fn.run());
+	return parse(input);
 }

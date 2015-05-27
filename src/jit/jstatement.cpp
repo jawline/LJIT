@@ -14,10 +14,10 @@ Statement::Statement(StatementType type, SafeStatement lhs, SafeStatement rhs) {
   _rhs = rhs;
 }
 
-void Statement::write(ByteBuffer& buffer) {
+void Statement::write(Assembler::ByteBuffer& buffer) {
   switch (_type) {
     case Atom:
-      Helper::addTopTwoStack(buffer);
+      Helper::pushNumber(_val, buffer);
       break;
     case Add:
       Helper::addTopTwoStack(buffer);

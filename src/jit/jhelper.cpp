@@ -4,6 +4,7 @@
 #include <sys/mman.h>
 
 using namespace JIT;
+using namespace Assembler;
 
 void Helper::pushBasicResult(ByteBuffer& buffer) {
     //Convention, basic (atom, add, sub, mul, div) results go to RAX on intel64
@@ -19,18 +20,18 @@ void Helper::popTwo(ByteBuffer& buffer) {
 }
 
 void Helper::insertPrologue(ByteBuffer& buffer) {
-    buffer.insert(Template::prologue, sizeof(Template::prologue));
+    buffer.insert(Template::prologue, Template::prologueSize());
 }
 
 void Helper::insertEpilogue(ByteBuffer& buffer) {
-    buffer.insert(Template::epilogue, sizeof(Template::epilogue));
+    buffer.insert(Template::epilogue, Template::epilogueSize());
 }
 
 void Helper::pushNumber(int64_t value, ByteBuffer& buffer) {
     //mov _val, RAX
-    uint8_t mrax[2] = { 0x48, 0xB8 };
-    buffer.insert(mrax, 2);
-    buffer.insert((int64_t) _val);
+    uint8_t mrax[] = { 0x48, 0xB8 };
+    buffer.insert(mrax, sizeof(mrax));
+    buffer.insert((int64_t) value);
 
     pushBasicResult(buffer);
 }
@@ -39,7 +40,8 @@ void Helper::addTopTwoStack(ByteBuffer& buffer) {
     popTwo(buffer);
     
     //add RCX, RAX
-    buffer.insert((uint8_t*){0x48, 0x01, 0xC8}, 3);
+    uint8_t addRcxRax[] = {0x48, 0x01, 0xC8};
+    buffer.insert(addRcxRax, sizeof(addRcxRax));
     
     pushBasicResult(buffer);
 }
@@ -48,7 +50,8 @@ void Helper::subTopTwoStack(ByteBuffer& buffer) {
     popTwo(buffer);
     
     //sub RCX, RAX
-    buffer.insert((uint8_t*){0x48, 0x29, 0xC8}, 3);
+    uint8_t subRcxRax[] = {0x48, 0x29, 0xC8};
+    buffer.insert(subRcxRax, sizeof(subRcxRax));
     
     pushBasicResult(buffer);   
 }
@@ -57,7 +60,8 @@ void Helper::mulTopTwoStack(ByteBuffer& buffer) {
     popTwo(buffer);
     
     //mul rcx
-    buffer.insert((uint8_t*){0x48, 0xF7, 0xE1}, 3);
+    uint8_t mulRcx[] = {0x48, 0xF7, 0xE1};
+    buffer.insert(mulRcx, sizeof(mulRcx));
     
     pushBasicResult(buffer);   
 }
@@ -66,7 +70,8 @@ void Helper::divTopTwoStack(ByteBuffer& buffer) {
     popTwo(buffer);
     
     //div rcx
-    buffer.insert((uint8_t*){0x48, 0xF7, 0xF1}, 3);
+    uint8_t divRcx[] = {0x48, 0xF7, 0xF1};
+    buffer.insert(divRcx, sizeof(divRcx));
     
     pushBasicResult(buffer);   
 }
@@ -79,5 +84,5 @@ JFPTR Helper::prepareFunctionPointer(ByteBuffer const& buffer) {
 }
 
 void Helper::freeFunctionPointer(JFPTR ptr, size_t size) {
-  munmap(mem, size);
+  munmap((void*)ptr, size);
 }

@@ -11,7 +11,9 @@ namespace JIT {
         Subtract,
         Multiply,
         Divide
-    }
+    };
+
+    typedef std::shared_ptr<class Statement> SafeStatement;
 
     class Statement {
         private:
@@ -21,10 +23,8 @@ namespace JIT {
         public:
           Statement(int64_t val);
           Statement(StatementType type, SafeStatement lhs, SafeStatement rhs);
-          void write(ByteBuffer& buffer);
+          void write(Assembler::ByteBuffer& buffer);
     };
-    
-    typedef std::shared_ptr<Statement> SafeStatement;
 }
 
 #endif //_JSTATEMENT_DEF_H_

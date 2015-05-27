@@ -1,6 +1,6 @@
 #ifndef _JIT_HELPER_DEF_H_
 #define _JIT_HELPER_DEF_H_
-#include <stdint>
+#include <stdint.h>
 #include "../utils/bytebuffer.h"
 
 namespace JIT {
@@ -9,18 +9,18 @@ namespace JIT {
   
   class Helper {
   private:
-    static void pushBasicResult(ByteBuffer& buffer);
-    static void popTwo(ByteBuffer& buffer);
+    static void pushBasicResult(Assembler::ByteBuffer& buffer);
+    static void popTwo(Assembler::ByteBuffer& buffer);
 
   public:
-    static void insertPrologue(ByteBuffer& buffer);
-    static void insertEpilogue(ByteBuffer& buffer);
-    static void pushNumber(int64_t value, ByteBuffer& buffer);
-    static void addTopTwoStack(ByteBuffer& buffer);
-    static void subTopTwoStack(ByteBuffer& buffer);
-    static void mulTopTwoStack(ByteBuffer& buffer);
-    static void divTopTwoStack(ByteBuffer& buffer);
-    static JFPTR prepareFunctionPointer(ByteBuffer const& buffer);
+    static void insertPrologue(Assembler::ByteBuffer& buffer);
+    static void insertEpilogue(Assembler::ByteBuffer& buffer);
+    static void pushNumber(int64_t value, Assembler::ByteBuffer& buffer);
+    static void addTopTwoStack(Assembler::ByteBuffer& buffer);
+    static void subTopTwoStack(Assembler::ByteBuffer& buffer);
+    static void mulTopTwoStack(Assembler::ByteBuffer& buffer);
+    static void divTopTwoStack(Assembler::ByteBuffer& buffer);
+    static JFPTR prepareFunctionPointer(Assembler::ByteBuffer const& buffer);
     static void freeFunctionPointer(JFPTR ptr, size_t size);
   };
 }
