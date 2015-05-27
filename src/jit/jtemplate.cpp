@@ -8,6 +8,7 @@ uint8_t Template::prologue[] = {
 };
 
 uint8_t Template::epilogue[] = {
+    0x58, //pop RAX (placing the result of our lovely math into RAX)
     0x48, 0x89, 0xEC //mov rbp, rsp (restore RSP)
     0x5d, // pop rbp (restore RBP)
     0xC3 // ret
