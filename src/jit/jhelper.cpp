@@ -31,9 +31,10 @@ void Helper::addTopTwoStack(ByteBuffer& buffer) {
 }
 
 JFPTR Helper::prepareFunctionPointer(ByteBuffer const& buffer) {
+  //mmap some executable and writable memory and copy machine code into it
   void* mem = mmap(NULL, buffer.current(), PROT_WRITE | PROT_EXEC, MAP_ANON | MAP_PRIVATE, -1, 0);
   memcpy(mem, buffer.raw(), buffer.current());
-  JFPTR ptr = (JFPTR) mem;
+  return (JFPTR) mem;
 }
 
 void Helper::freeFunctionPointer(JFPTR ptr, size_t size) {
