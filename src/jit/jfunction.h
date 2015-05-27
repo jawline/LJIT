@@ -7,13 +7,15 @@
 namespace JIT {
 	class JFunction {
 	private:
-		void prepare(JStatement  const& stmt);
+		void prepare(JStatement const& stmt);
 		JFPTR _storedFn;
 		size_t _fnSize;
 
 	public:
 		JFunction(JStatement stmt);
 		~JFunction();
+		
+		int64_t run() const;
 	};
 }
 
