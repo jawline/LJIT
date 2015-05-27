@@ -9,6 +9,8 @@ using namespace Assembler;
 Parser::Parser() {}
 Parser::~Parser() {}
 
+#define CHECK(x) if (!x) { return nullptr; }
+
 JIT::SafeStatement Parser::parseAtom(char const*& input) {
 	Token next = _tokeniser.nextToken(input);
 	if (next.id() != NUM) {
@@ -30,17 +32,13 @@ JIT::SafeStatement Parser::parseFunctionCall(char const*& input) {
 		next = _tokeniser.peekToken(input);
 		
 		if (next.id() == LPAREN) {
-			SafeStatement next = parseBlock(input, buffer);
-			if (!next) {
-				return nullptr;
-			}
-			args.push_back(next);
+			SafeStatement arg = parseBlock(input, buffer);
+			CHECK(arg);
+			args.push_back(arg);
 		} else if (next.id() == NUM) {
-			SafeStatement next = parseAtom(input, buffer);
-			if (!next) {
-				return nullptr;
-			}
-			args.push_back(next);
+			SafeStatement arg = parseAtom(input, buffer);
+			CHECK(arg);
+			args.push_back(arg);
 		} else {
 			break;
 		}
@@ -86,9 +84,7 @@ JIT::SafeStatement Parser::parseBlock(char const*& input) {
 		result = nullptr;
 	}
 
-	if (!result) {
-		return nullptr;
-	}
+	CHECK(result);
 
 	next = _tokeniser.nextToken(input);
 
@@ -114,13 +110,8 @@ bool Parser::parse(char const* input) {
 	}
 	
 	SafeStatement block = parseBlock(input, buffer);
-	
-	if (!block) {
-		return false;
-	}
-
+	CHECK(block);
 	JIT::JFunction fn = JIT::JFunction(block);
 	printf("%i\n", fn.run());
-	
 	return parse(input, buffer);
 }
