@@ -67,6 +67,9 @@ SafeStatement Parser::parseFunctionCall(char const*& input) {
 	} else if (name.compare("get") == 0) {
 		type = Get;
 		numExpectedArgs = 1;
+	} else if (name.compare("print") == 0) {
+		type = Print;
+		numExpectedArgs = 1;
 	} else {
 		printf("%s not a valid call\n", name.c_str());
 		return nullptr;

@@ -109,7 +109,7 @@ void Helper::setArgument(unsigned int num, int64_t val, Assembler::ByteBuffer& b
             break;            
         }
         default:
-            printf("UNSUPPORTED ARG NUM\n");
+            printf("UNSUPPORTED ARG NUM %i\n", num);
             return;
     }
 }
@@ -127,7 +127,7 @@ void Helper::setArgumentStackTop(unsigned int num, Assembler::ByteBuffer& buffer
             break;            
         }
         default:
-            printf("UNSUPPORTED ARG NUM\n");
+            printf("UNSUPPORTED ARG NUM %i\n", num);
             return;
     }
 }

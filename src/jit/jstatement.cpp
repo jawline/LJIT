@@ -29,6 +29,11 @@ int64_t ScopeGetFn(int64_t id) {
   return 0;
 }
 
+int64_t PrintFn(int64_t val) {
+  printf("Print Call: %li\n", val);
+  return val;
+}
+
 void Statement::write(Assembler::ByteBuffer& buffer) {
   switch (_type) {
     case Atom:
@@ -65,6 +70,11 @@ void Statement::write(Assembler::ByteBuffer& buffer) {
       _lhs->write(buffer);
       Helper::setArgumentStackTop(0, buffer);
       Helper::callFunction((void*) ScopeGetFn, buffer);
+      break;
+    case Print:
+      _lhs->write(buffer);
+      Helper::setArgumentStackTop(0, buffer);
+      Helper::callFunction((void*) PrintFn, buffer);
       break;
     default:
       printf("Could not JIT\n");

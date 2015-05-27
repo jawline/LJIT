@@ -12,7 +12,8 @@ namespace JIT {
         Multiply,
         Divide,
         Get,
-        Set
+        Set,
+        Print
     };
 
     typedef std::shared_ptr<class Statement> SafeStatement;
