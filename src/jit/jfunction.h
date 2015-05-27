@@ -6,6 +6,8 @@
 namespace JIT {
 	class JFunction {
 	private:
+		void prepare(JStatement  const& stmt);
+
 	public:
 		JFunction(JStatement stmt);
 		~JFunction();
