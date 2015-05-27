@@ -56,7 +56,15 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 	
-	auto fn = JIT::JFunction(JIT::Statement(JIT::SafeStatement(new JIT::Statement(5)), JIT::SafeStatement(new JIT::Statement(6))));
+	auto fn = JIT::JFunction(
+		JIT::SafeStatement(
+			new JIT::Statement(JIT::Add,
+				JIT::SafeStatement(new JIT::Statement(5)),
+				JIT::SafeStatement(new JIT::Statement(6))
+			)
+		)
+	);
+
 	fn.run();
 
 /*
