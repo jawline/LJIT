@@ -20,10 +20,24 @@ void Statement::write(Assembler::ByteBuffer& buffer) {
       Helper::pushNumber(_val, buffer);
       break;
     case Add:
+      _lhs->write(buffer);
+      _rhs->write(buffer);
       Helper::addTopTwoStack(buffer);
       break;
     case Subtract:
+      _lhs->write(buffer);
+      _rhs->write(buffer);
       Helper::subTopTwoStack(buffer);
+      break;
+    case Multiply:
+      _lhs->write(buffer);
+      _rhs->write(buffer);
+      Helper::mulTopTwoStack(buffer);
+      break;
+    case Divide:
+      _lhs->write(buffer);
+      _rhs->write(buffer);
+      Helper::divTopTwoStack(buffer);
       break;
     default:
       printf("Could not JIT\n");
