@@ -6,6 +6,8 @@
 namespace JIT {
   class Helper {
   public:
+    static void insertPrologue(ByteBuffer& buffer);
+    static void insertEpilogue(ByteBuffer& buffer);
     static void pushNumber(int64_t value, ByteBuffer& buffer);
   };
 }
