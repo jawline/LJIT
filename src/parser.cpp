@@ -3,6 +3,7 @@
 #include <CoreVM/registers.h>
 #include <vector>
 #include <stdio.h>
+#include "jit/jcallbacks.h"
 
 using namespace Assembler;
 using namespace JIT;
@@ -46,7 +47,7 @@ SafeStatement Parser::parseFunctionCall(char const*& input) {
 	}
 	
 	StatementType type;
-
+	void* callback = nullptr;
 	int numExpectedArgs;
 	
 	if (name.compare("add") == 0) {
@@ -62,13 +63,16 @@ SafeStatement Parser::parseFunctionCall(char const*& input) {
 		type = Divide;
 		numExpectedArgs = 2;
 	} else if (name.compare("set") == 0) {
-		type = Set;
+		type = NativeCallback;
+		callback = Callbacks::set;
 		numExpectedArgs = 2;
 	} else if (name.compare("get") == 0) {
-		type = Get;
+		type = NativeCallback;
+		callback = Callbacks::get;
 		numExpectedArgs = 1;
 	} else if (name.compare("print") == 0) {
-		type = Print;
+		type = NativeCallback;
+		callback = Callbacks::print;
 		numExpectedArgs = 1;
 	} else {
 		printf("%s not a valid call\n", name.c_str());
@@ -80,7 +84,7 @@ SafeStatement Parser::parseFunctionCall(char const*& input) {
 		return nullptr;
 	}
 
-	return SafeStatement(new Statement(type, args));
+	return SafeStatement(new Statement(type, callback, args));
 }
 
 SafeStatement Parser::parseBlock(char const*& input) {
