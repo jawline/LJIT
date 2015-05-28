@@ -5,7 +5,7 @@
 #include "jhelper.h"
 
 namespace JIT {
-	class JFunction {
+	class Function {
 	private:
 		void prepare(SafeStatement const& stmt);
 		JFPTR _storedFn;
