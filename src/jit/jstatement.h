@@ -1,6 +1,7 @@
 #ifndef _JSTATEMENT_DEF_H_
 #define _JSTATEMENT_DEF_H_
 #include <memory>
+#include <vector>
 #include "../utils/bytebuffer.h"
 
 namespace JIT {
@@ -22,11 +23,10 @@ namespace JIT {
         private:
           StatementType _type;
           int64_t _val;
-          SafeStatement _lhs, _rhs;
+          std::vector<SafeStatement> args;
         public:
           Statement(int64_t val);
-          Statement(StatementType type, SafeStatement lhs);
-          Statement(StatementType type, SafeStatement lhs, SafeStatement rhs);
+          Statement(StatementType type, std::vector<SafeStatement> const& args);
           void write(Assembler::ByteBuffer& buffer);
     };
 }
