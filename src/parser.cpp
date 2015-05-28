@@ -80,11 +80,7 @@ SafeStatement Parser::parseFunctionCall(char const*& input) {
 		return nullptr;
 	}
 
-	if (numExpectedArgs == 2) {
-		return SafeStatement(new Statement(type, args[0], args[1]));
-	} else {
-		return SafeStatement(new Statement(type, args[0]));
-	}
+	return SafeStatement(new Statement(type, args));
 }
 
 SafeStatement Parser::parseBlock(char const*& input) {
