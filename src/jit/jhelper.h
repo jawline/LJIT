@@ -20,7 +20,7 @@ namespace JIT {
     static void callFunction(void* fnPtr, Assembler::ByteBuffer& buffer);
     static void setArgument(unsigned int num, int64_t val, Assembler::ByteBuffer& buffer);
     static void setArgumentStackTop(unsigned int num, Assembler::ByteBuffer& buffer);
-    static void saveScope(Assembler::ByteBuffer& buffer);
+    static void setArgumentZeroScope(Assembler::ByteBuffer& buffer);
     static void addTopTwoStack(Assembler::ByteBuffer& buffer);
     static void subTopTwoStack(Assembler::ByteBuffer& buffer);
     static void mulTopTwoStack(Assembler::ByteBuffer& buffer);
