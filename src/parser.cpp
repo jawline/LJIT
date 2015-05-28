@@ -115,7 +115,7 @@ SafeStatement Parser::parseBlock(char const*& input) {
 	return result;
 }
 
-void Parser::parseFunction(char const*& input, std::map<std::string, JIT::FunctionReference>& functionList) {
+bool Parser::parseFunction(char const*& input, std::map<std::string, JIT::FunctionReference>& functionList) {
 }
 
 bool Parser::parse(char const* input) {
@@ -131,6 +131,10 @@ bool Parser::parse(char const* input) {
 		CHECK(block);
 		JFunction fn = JFunction(block);
 		printf("Line Result: %li\n", fn.run());
+	} else if (next.id() == FUNCTION) {
+		if (!parseFunction(input, _functions)) {
+			return false;
+		}
 	} else {
 		printf("Expected LPAREN\n");
 		return false;
