@@ -9,15 +9,9 @@ Statement::Statement(int64_t val) {
   _val = val;
 }
 
-Statement::Statement(StatementType type, SafeStatement lhs) {
+Statement::Statement(StatementType type, std::vector<SafeStatement> const& args) {
   _type = type;
   _lhs = lhs;
-}
-
-Statement::Statement(StatementType type, SafeStatement lhs, SafeStatement rhs) {
-  _type = type;
-  _lhs = lhs;
-  _rhs = rhs;
 }
 
 void Statement::write(Assembler::ByteBuffer& buffer) {
