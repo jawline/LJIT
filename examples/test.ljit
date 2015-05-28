@@ -1,3 +1,3 @@
-(add (set 4 10) 20)
-(add (add (get 4) (get 4)) 25)
-(sub 5 (print (add 5 5)))
+(set 0 150)
+(set 1 300)
+(print (add (get 0) (get 1)))
