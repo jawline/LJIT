@@ -158,8 +158,6 @@ bool Parser::parseFunction(char const*& input, std::map<std::string, SafeFunctio
 	CHECK(block);
 	functionList[name] = SafeFunction(new Function(block));
 
-	printf("Stored function %s\n", name.c_str());
-
 	return true;
 }
 
