@@ -2,10 +2,11 @@
 #define _JIT_HELPER_DEF_H_
 #include <stdint.h>
 #include "../utils/bytebuffer.h"
+#include "jscope.h"
 
 namespace JIT {
   
-  typedef int64_t (*JFPTR)(int* scope);
+  typedef int64_t (*JFPTR)(Scope* scope);
   
   class Helper {
   private:
