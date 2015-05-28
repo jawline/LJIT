@@ -20,6 +20,10 @@ Statement::Statement(StatementType type, void* callback, std::vector<SafeStateme
   _args = args;
 }
 
+void Statement::updateCallback(void* callback) {
+  _callback = callback;
+}
+
 void Statement::write(Assembler::ByteBuffer& buffer) {
   switch (_type) {
     case Atom:
@@ -52,6 +56,10 @@ void Statement::write(Assembler::ByteBuffer& buffer) {
       Helper::setArgumentZeroScope(buffer);
       for (int i = _args.size() - 1; i >= 0; i--) {
         Helper::setArgumentStackTop(i+1, buffer);
+      }
+      if (_callback == nullptr) {
+        printf("Cannot produce nativecall, _callback unresolved\n");
+        return;
       }
       Helper::callFunction(_callback, buffer);
       break;

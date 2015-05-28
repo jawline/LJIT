@@ -21,6 +21,17 @@ SafeStatement Parser::parseAtom(char const*& input) {
 	return SafeStatement(new Statement(next.asInt()));
 }
 
+void Parser::resolveAll() {
+	for (unsigned int i = 0; i < _unresolved.size(); i++) {
+		if (_functions.find(_unresolved[i].first) != _functions.end()) {
+			_unresolved[i].second->updateCallback((void*)_functions[_unresolved[i].first]->getFnPtr());
+			_unresolved.erase(_unresolved.begin() + i);
+			resolveAll();
+			return;
+		}
+	}
+}
+
 SafeStatement Parser::parseFunctionCall(char const*& input) {
 
 	//Get function call name
@@ -75,8 +86,9 @@ SafeStatement Parser::parseFunctionCall(char const*& input) {
 		callback = (void*)Callbacks::print;
 		numExpectedArgs = 1;
 	} else {
-		printf("%s not a valid call\n", name.c_str());
-		return nullptr;
+		type = NativeCallback;
+		callback = nullptr;
+		numExpectedArgs = 0;
 	}
 	
 	if (args.size() != numExpectedArgs) {
@@ -84,7 +96,15 @@ SafeStatement Parser::parseFunctionCall(char const*& input) {
 		return nullptr;
 	}
 
-	return SafeStatement(new Statement(type, callback, args));
+	auto result = SafeStatement(new Statement(type, callback, args));
+
+	if (type == NativeCallback && callback == nullptr) {
+		_unresolved.push_back(pair<string, SafeStatement>(name, result));
+	}
+
+	resolveAll();
+
+	return result;
 }
 
 SafeStatement Parser::parseBlock(char const*& input) {
@@ -115,7 +135,7 @@ SafeStatement Parser::parseBlock(char const*& input) {
 	return result;
 }
 
-bool Parser::parseFunction(char const*& input, std::map<std::string, SafeFunctionReference>& functionList) {
+bool Parser::parseFunction(char const*& input, std::map<std::string, SafeFunction>& functionList) {
 	
 	Token next = _tokeniser.nextToken(input);
 	next = _tokeniser.nextToken(input);
@@ -135,10 +155,10 @@ bool Parser::parseFunction(char const*& input, std::map<std::string, SafeFunctio
 	}
 	
 	SafeStatement block = parseBlock(input);
-	auto fn = makeFunctionReference();
 	CHECK(block);
-	fn->set(SafeFunction(new Function(block)));
-	functionList[name] = fn;
+	functionList[name] = SafeFunction(new Function(block));
+
+	printf("Stored function %s\n", name.c_str());
 
 	return true;
 }
@@ -160,6 +180,7 @@ bool Parser::innerParse(char const*& input, JIT::Scope* scope) {
 		if (!parseFunction(input, _functions)) {
 			return false;
 		}
+		resolveAll();
 	} else {
 		printf("Expected LPAREN\n");
 		return false;

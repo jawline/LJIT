@@ -10,12 +10,14 @@ namespace JIT {
 		void prepare(SafeStatement const& stmt);
 		JFPTR _storedFn;
 		size_t _fnSize;
+		SafeStatement _stmt;
 
 	public:
 		Function(SafeStatement const& stmt);
 		~Function();
 		
-		int64_t run(Scope* scope) const;
+		int64_t run(Scope* scope);
+		JFPTR getFnPtr();
 	};
 	
 	typedef std::shared_ptr<Function> SafeFunction;

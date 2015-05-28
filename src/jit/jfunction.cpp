@@ -5,11 +5,14 @@ using namespace JIT;
 using namespace Assembler;
 
 Function::Function(SafeStatement const& stmt) {
-  prepare(stmt);
+  _storedFn = nullptr;
+  _stmt = stmt;
 }
 
 Function::~Function() {
-  Helper::freeFunctionPointer(_storedFn, _fnSize);
+  if (_storedFn) {
+  	Helper::freeFunctionPointer(_storedFn, _fnSize);
+  }
 }
 
 void Function::prepare(SafeStatement const& stmt) {
@@ -23,6 +26,13 @@ void Function::prepare(SafeStatement const& stmt) {
   _fnSize = buffer.current();
 }
 
-int64_t Function::run(Scope* scope) const {
-  return _storedFn(scope);
+int64_t Function::run(Scope* scope) {
+  return getFnPtr()(scope);
+}
+
+JFPTR Function::getFnPtr() {
+	if (!_storedFn) {
+		prepare(_stmt);
+	}
+	return _storedFn;
 }
