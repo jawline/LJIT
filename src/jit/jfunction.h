@@ -17,6 +17,8 @@ namespace JIT {
 		
 		int64_t run(Scope* scope) const;
 	};
+	
+	typedef std::shared_ptr<Function> SafeFunction;
 }
 
 #endif //_JIT_FUNCTION_DEF_H_
