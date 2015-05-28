@@ -21,7 +21,7 @@ namespace JIT {
         private:
           StatementType _type;
           int64_t _val;
-          void* callback;
+          void* _callback;
           std::vector<SafeStatement> _args;
         public:
           Statement(int64_t val);
