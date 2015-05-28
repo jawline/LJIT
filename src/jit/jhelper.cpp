@@ -35,12 +35,9 @@ void Helper::loadAddress(void* address, ByteBuffer& buffer) {
 }
 
 void Helper::callFunction(void* fnPtr, ByteBuffer& buffer) {
-    loadAddress(fnPtr, buffer);
-
-    //call rax
-    uint8_t crax[] = {0xFF, 0xD0};
-    buffer.insert(crax, sizeof(crax));
-
+    //call fnPtr
+    buffer.insert(0xE8);
+    buffer.insert((int64_t) fnPtr);
     pushBasicResult(buffer);
 }
 
