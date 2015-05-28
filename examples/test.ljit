@@ -1,3 +1,4 @@
 (set 0 150)
 (set 1 300)
-(get 0)
+(print (add (get 0) (get 1)))
+(add (print (add 150 (get 0))) (print (mul 5 10)))
