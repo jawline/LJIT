@@ -35,9 +35,11 @@ void Helper::loadAddress(void* address, ByteBuffer& buffer) {
 }
 
 void Helper::callFunction(void* fnPtr, ByteBuffer& buffer) {
+    //TODO: Work out the damn call addr instruction and use that instead of loading it into a register.
+    loadAddress(fnPtr);
     //call fnPtr
-    buffer.insert(0xE8);
-    buffer.insert((int64_t) fnPtr);
+    buffer.insert(0xFF);
+    buffer.insert(0xD0);
     pushBasicResult(buffer);
 }
 
