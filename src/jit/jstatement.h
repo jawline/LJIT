@@ -23,7 +23,7 @@ namespace JIT {
         private:
           StatementType _type;
           int64_t _val;
-          std::vector<SafeStatement> args;
+          std::vector<SafeStatement> _args;
         public:
           Statement(int64_t val);
           Statement(StatementType type, std::vector<SafeStatement> const& args);
