@@ -4,15 +4,15 @@
 using namespace JIT;
 using namespace Assembler;
 
-JFunction::JFunction(SafeStatement const& stmt) {
+Function::Function(SafeStatement const& stmt) {
   prepare(stmt);
 }
 
-JFunction::~JFunction() {
+Function::~Function() {
   Helper::freeFunctionPointer(_storedFn, _fnSize);
 }
 
-void JFunction::prepare(SafeStatement const& stmt) {
+void Function::prepare(SafeStatement const& stmt) {
   ByteBuffer buffer;
 
   Helper::insertPrologue(buffer);
@@ -23,6 +23,6 @@ void JFunction::prepare(SafeStatement const& stmt) {
   _fnSize = buffer.current();
 }
 
-int64_t JFunction::run() const {
+int64_t Function::run() const {
   return _storedFn();
 }
