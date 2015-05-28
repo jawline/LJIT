@@ -15,7 +15,7 @@ namespace JIT {
 		Function(SafeStatement const& stmt);
 		~Function();
 		
-		int64_t run() const;
+		int64_t run(Scope* scope) const;
 	};
 }
 
