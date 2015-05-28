@@ -116,6 +116,31 @@ SafeStatement Parser::parseBlock(char const*& input) {
 }
 
 bool Parser::parseFunction(char const*& input, std::map<std::string, JIT::FunctionReference>& functionList) {
+	
+	Token next = _tokeniser.nextToken(input);
+	next = _tokeniser.nextToken(input);
+	
+	if (next.id() != ID) {
+		printf("Expected function name\n");
+		return false;
+	}
+	
+	std::string name = next.asString();
+	
+	Token next = _tokeniser.nextToken(input);
+	
+	if (next.id() != ARROW) {
+		printf("Expected arrow\n");
+		return false;
+	}
+	
+	SafeStatement block = parseBlock(input);
+	auto fn = JIT::makeFunctionReference();
+	fn->set(JIT::SafeFunction(new JIT::Function(block)));
+	
+	functionList[name] = fn;
+
+	return true;
 }
 
 bool Parser::parse(char const* input) {
