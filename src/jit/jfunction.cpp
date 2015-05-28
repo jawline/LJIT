@@ -23,6 +23,6 @@ void Function::prepare(SafeStatement const& stmt) {
   _fnSize = buffer.current();
 }
 
-int64_t Function::run() const {
-  return _storedFn();
+int64_t Function::run(Scope* scope) const {
+  return _storedFn(scope);
 }
