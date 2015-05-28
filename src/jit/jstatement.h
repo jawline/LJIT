@@ -12,9 +12,7 @@ namespace JIT {
         Subtract,
         Multiply,
         Divide,
-        Get,
-        Set,
-        Print
+        NativeCallback
     };
 
     typedef std::shared_ptr<class Statement> SafeStatement;
@@ -23,10 +21,12 @@ namespace JIT {
         private:
           StatementType _type;
           int64_t _val;
+          void* callback;
           std::vector<SafeStatement> _args;
         public:
           Statement(int64_t val);
           Statement(StatementType type, std::vector<SafeStatement> const& args);
+          Statement(StatementType type, void* callback, std::vector<SafeStatement> const& args);
           void write(Assembler::ByteBuffer& buffer);
     };
 }
