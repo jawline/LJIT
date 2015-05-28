@@ -136,8 +136,8 @@ bool Parser::parseFunction(char const*& input, std::map<std::string, FunctionRef
 	
 	SafeStatement block = parseBlock(input);
 	auto fn = makeFunctionReference();
+	CHECK(block);
 	fn->set(SafeFunction(new Function(block)));
-	
 	functionList[name] = fn;
 
 	return true;
