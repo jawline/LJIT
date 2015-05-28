@@ -12,8 +12,8 @@ namespace JIT {
 		size_t _fnSize;
 
 	public:
-		JFunction(SafeStatement const& stmt);
-		~JFunction();
+		Function(SafeStatement const& stmt);
+		~Function();
 		
 		int64_t run() const;
 	};
