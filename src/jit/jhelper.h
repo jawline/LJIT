@@ -5,7 +5,7 @@
 
 namespace JIT {
   
-  typedef int64_t (*JFPTR)();
+  typedef int64_t (*JFPTR)(int* scope);
   
   class Helper {
   private:
