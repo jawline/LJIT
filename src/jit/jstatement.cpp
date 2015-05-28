@@ -39,25 +39,15 @@ void Statement::write(Assembler::ByteBuffer& buffer) {
       args[1]->write(buffer);
       Helper::divTopTwoStack(buffer);
       break;
-    case Set:
-      args[0]->write(buffer);
-      args[1]->write(buffer);
+    case NativeCallback:
+      for (unsigned int i = 0; i < _args.size(); i++) {
+        args[i]->write(buffer);
+      }
       Helper::setArgumentZeroScope(buffer);
-      Helper::setArgumentStackTop(2, buffer);
-      Helper::setArgumentStackTop(1, buffer);
-      Helper::callFunction((void*) Callbacks::set, buffer);
-      break;
-    case Get:
-      args[0]->write(buffer);
-      Helper::setArgumentZeroScope(buffer);
-      Helper::setArgumentStackTop(1, buffer);
-      Helper::callFunction((void*) Callbacks::get, buffer);
-      break;
-    case Print:
-      args[0]->write(buffer);
-      Helper::setArgumentZeroScope(buffer);
-      Helper::setArgumentStackTop(1, buffer);
-      Helper::callFunction((void*) Callbacks::print, buffer);
+      for (unsigned int i = _args.size() - 1; i >= 0; i--) {
+        Helper::setArgumentStackTop(i+1, buffer);
+      }
+      Helper::callFunction(_callback, buffer);
       break;
     default:
       printf("Could not JIT\n");
