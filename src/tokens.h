@@ -13,6 +13,7 @@ namespace Assembler {
 		NUM,
 		LPAREN,
 		RPAREN,
+		FUNCTION,
 		TOKEN_EOF,
 		INVALID_TOKEN
 	} TOKEN_ID;
