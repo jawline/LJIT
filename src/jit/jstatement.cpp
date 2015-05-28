@@ -14,6 +14,12 @@ Statement::Statement(StatementType type, std::vector<SafeStatement> const& args)
   _lhs = lhs;
 }
 
+Statement::Statement(StatementType type, void* callback, std::vector<SafeStatement> const& args) {
+  _type = type;
+  _callback = callback;
+  _args = args;
+}
+
 void Statement::write(Assembler::ByteBuffer& buffer) {
   switch (_type) {
     case Atom:
