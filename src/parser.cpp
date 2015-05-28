@@ -115,6 +115,9 @@ SafeStatement Parser::parseBlock(char const*& input) {
 	return result;
 }
 
+void Parser::parseFunction(char const*& input, std::map<std::string, JIT::FunctionReference>& functionList) {
+}
+
 bool Parser::parse(char const* input) {
 	
 	Token next = _tokeniser.peekToken(input);
@@ -123,14 +126,14 @@ bool Parser::parse(char const* input) {
 		return true;
 	}
 
-	if (next.id() != LPAREN) {
+	if (next.id() == LPAREN) {
+		SafeStatement block = parseBlock(input);
+		CHECK(block);
+		JFunction fn = JFunction(block);
+		printf("Line Result: %li\n", fn.run());
+	} else {
 		printf("Expected LPAREN\n");
 		return false;
 	}
-	
-	SafeStatement block = parseBlock(input);
-	CHECK(block);
-	JFunction fn = JFunction(block);
-	printf("Line Result: %li\n", fn.run());
 	return parse(input);
 }
