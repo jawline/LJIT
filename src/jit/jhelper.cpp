@@ -102,7 +102,13 @@ void Helper::setArgument(unsigned int num, int64_t val, Assembler::ByteBuffer& b
             break;
         }
         case 1: {
-            uint8_t movRdi[] = { 0x48, 0xBE };
+            uint8_t movRsi[] = { 0x48, 0xBE };
+            buffer.insert(movRdi, sizeof(movRdi));
+            buffer.insert(val);
+            break;            
+        }
+        case 1: {
+            uint8_t movRdx[] = { 0x48, 0xBA };
             buffer.insert(movRdi, sizeof(movRdi));
             buffer.insert(val);
             break;            
@@ -128,6 +134,11 @@ void Helper::setArgumentStackTop(unsigned int num, Assembler::ByteBuffer& buffer
         case 1: {
             //pop rsi
             buffer.insert((uint8_t)0x5E);
+            break;            
+        }
+        case 2: {
+            //pop rdx
+            buffer.insert((uint8_t)0x5A);
             break;            
         }
         default:
