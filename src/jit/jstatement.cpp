@@ -19,17 +19,17 @@ Statement::Statement(StatementType type, SafeStatement lhs, SafeStatement rhs) {
   _rhs = rhs;
 }
 
-int64_t ScopeSetFn(int64_t id, int64_t val) {
+int64_t ScopeSetFn(int* scope, int64_t id, int64_t val) {
   printf("If I knew how I would set %li to %li on the current scope\n", id, val);
   return val;
 }
 
-int64_t ScopeGetFn(int64_t id) {
+int64_t ScopeGetFn(int* scope, int64_t id) {
   printf("If I knew how I would get %li from the current scope\n", id);
   return 0;
 }
 
-int64_t PrintFn(int64_t val) {
+int64_t PrintFn(int* scope, int64_t val) {
   printf("Print Call: %li\n", val);
   return val;
 }
@@ -62,18 +62,21 @@ void Statement::write(Assembler::ByteBuffer& buffer) {
     case Set:
       _lhs->write(buffer);
       _rhs->write(buffer);
+      Helper::setArgumentZeroScope(buffer);
+      Helper::setArgumentStackTop(2, buffer);
       Helper::setArgumentStackTop(1, buffer);
-      Helper::setArgumentStackTop(0, buffer);
       Helper::callFunction((void*) ScopeSetFn, buffer);
       break;
     case Get:
       _lhs->write(buffer);
-      Helper::setArgumentStackTop(0, buffer);
+      Helper::setArgumentZeroScope(buffer);
+      Helper::setArgumentStackTop(1, buffer);
       Helper::callFunction((void*) ScopeGetFn, buffer);
       break;
     case Print:
       _lhs->write(buffer);
-      Helper::setArgumentStackTop(0, buffer);
+      Helper::setArgumentZeroScope(buffer);
+      Helper::setArgumentStackTop(1, buffer);
       Helper::callFunction((void*) PrintFn, buffer);
       break;
     default:
