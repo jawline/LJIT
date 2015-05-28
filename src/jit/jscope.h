@@ -12,7 +12,7 @@ namespace JIT {
     ~Scope();
     
     void set(int64_t idx, int64_t val);
-    void get(int64_t idx) const;
+    int64_t get(int64_t idx) const;
   };
 }
 
