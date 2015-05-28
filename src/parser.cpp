@@ -64,15 +64,15 @@ SafeStatement Parser::parseFunctionCall(char const*& input) {
 		numExpectedArgs = 2;
 	} else if (name.compare("set") == 0) {
 		type = NativeCallback;
-		callback = Callbacks::set;
+		callback = (void*)Callbacks::set;
 		numExpectedArgs = 2;
 	} else if (name.compare("get") == 0) {
 		type = NativeCallback;
-		callback = Callbacks::get;
+		callback = (void*)Callbacks::get;
 		numExpectedArgs = 1;
 	} else if (name.compare("print") == 0) {
 		type = NativeCallback;
-		callback = Callbacks::print;
+		callback = (void*)Callbacks::print;
 		numExpectedArgs = 1;
 	} else {
 		printf("%s not a valid call\n", name.c_str());
@@ -115,7 +115,7 @@ SafeStatement Parser::parseBlock(char const*& input) {
 	return result;
 }
 
-bool Parser::parseFunction(char const*& input, std::map<std::string, FunctionReference>& functionList) {
+bool Parser::parseFunction(char const*& input, std::map<std::string, SafeFunctionReference>& functionList) {
 	
 	Token next = _tokeniser.nextToken(input);
 	next = _tokeniser.nextToken(input);
@@ -127,7 +127,7 @@ bool Parser::parseFunction(char const*& input, std::map<std::string, FunctionRef
 	
 	std::string name = next.asString();
 	
-	Token next = _tokeniser.nextToken(input);
+	next = _tokeniser.nextToken(input);
 	
 	if (next.id() != ARROW) {
 		printf("Expected arrow\n");
@@ -143,7 +143,7 @@ bool Parser::parseFunction(char const*& input, std::map<std::string, FunctionRef
 	return true;
 }
 
-bool Parser::parse(char const* input) {
+bool Parser::innerParse(char const*& input, JIT::Scope* scope) {
 	
 	Token next = _tokeniser.peekToken(input);
 
@@ -154,8 +154,8 @@ bool Parser::parse(char const* input) {
 	if (next.id() == LPAREN) {
 		SafeStatement block = parseBlock(input);
 		CHECK(block);
-		JFunction fn = JFunction(block);
-		printf("Line Result: %li\n", fn.run());
+		Function fn = Function(block);
+		printf("Line Result: %li\n", fn.run(scope));
 	} else if (next.id() == FUNCTION) {
 		if (!parseFunction(input, _functions)) {
 			return false;
@@ -164,5 +164,13 @@ bool Parser::parse(char const* input) {
 		printf("Expected LPAREN\n");
 		return false;
 	}
-	return parse(input);
+
+	return innerParse(input, scope);
+}
+
+bool Parser::parse(char const* input) {
+	Scope* scope = new Scope();
+	bool res = innerParse(input, scope);
+	delete scope;
+	return res;
 }

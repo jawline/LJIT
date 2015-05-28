@@ -18,6 +18,6 @@ void FunctionReference::set(SafeFunction fn) {
   _fn = fn;
 }
 	
-SafeFunctionReference makeFunctionReference() {
+SafeFunctionReference JIT::makeFunctionReference() {
   return SafeFunctionReference(new FunctionReference());
 }

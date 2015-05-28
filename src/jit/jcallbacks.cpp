@@ -10,6 +10,7 @@ int64_t Callbacks::print(Scope* scope, int64_t val) {
 
 int64_t Callbacks::set(Scope* scope, int64_t idx, int64_t val) {
   scope->set(idx, val);
+  return val;
 }
 
 int64_t Callbacks::get(Scope* scope, int64_t idx) {

@@ -36,10 +36,10 @@ void Helper::loadAddress(void* address, ByteBuffer& buffer) {
 
 void Helper::callFunction(void* fnPtr, ByteBuffer& buffer) {
     //TODO: Work out the damn call addr instruction and use that instead of loading it into a register.
-    loadAddress(fnPtr);
+    loadAddress(fnPtr, buffer);
     //call fnPtr
-    buffer.insert(0xFF);
-    buffer.insert(0xD0);
+    buffer.insert((uint8_t)0xFF);
+    buffer.insert((uint8_t)0xD0);
     pushBasicResult(buffer);
 }
 
@@ -102,13 +102,13 @@ void Helper::setArgument(unsigned int num, int64_t val, Assembler::ByteBuffer& b
         }
         case 1: {
             uint8_t movRsi[] = { 0x48, 0xBE };
-            buffer.insert(movRdi, sizeof(movRdi));
+            buffer.insert(movRsi, sizeof(movRsi));
             buffer.insert(val);
             break;            
         }
-        case 1: {
+        case 2: {
             uint8_t movRdx[] = { 0x48, 0xBA };
-            buffer.insert(movRdi, sizeof(movRdi));
+            buffer.insert(movRdx, sizeof(movRdx));
             buffer.insert(val);
             break;            
         }
