@@ -113,6 +113,11 @@ void Helper::setArgument(unsigned int num, int64_t val, Assembler::ByteBuffer& b
     }
 }
 
+void Helper::setArgumentZeroScope(Assembler::ByteBuffer& buffer) {
+    uint8_t mvR12Rdi[] = { 0x4C, 0x89, 0xE7 };
+    buffer.insert(mvR12Rdi, sizeof(mvR12Rdi));
+}
+
 void Helper::setArgumentStackTop(unsigned int num, Assembler::ByteBuffer& buffer) {
     switch (num) {
         case 0: {
