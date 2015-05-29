@@ -4,9 +4,10 @@
 using namespace JIT;
 using namespace Assembler;
 
-Function::Function(SafeStatement const& stmt) {
+Function::Function(SafeStatement const& stmt, size_t numArgs) {
   _storedFn = nullptr;
   _stmt = stmt;
+  _numArgs = numArgs;
 }
 
 Function::~Function() {
@@ -26,6 +27,10 @@ void Function::prepare(SafeStatement const& stmt) {
   _fnSize = buffer.current();
 }
 
+size_t Function::getNumArgs() const {
+	return _numArgs;
+}
+
 void Function::rewriteCallbacks() {
 
 	if (!_storedFn) {
@@ -36,7 +41,7 @@ void Function::rewriteCallbacks() {
 		if (!_unresolvedCallList[i].first->getCallback()) {
 			printf("STILL NOT ABLE TO RESOLVE ADDRESS\n");
 		} else {
-			printf("HEHEHEHE RESOLVED %x %x\n", _storedFn, _unresolvedCallList[i].first->getCallback());
+			printf("RewriteCallbacks resolved a callback\n");
 			Helper::updateAddress(_storedFn, _unresolvedCallList[i].second, _unresolvedCallList[i].first->getCallback());
 		}
 	}

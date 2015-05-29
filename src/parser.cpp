@@ -21,15 +21,19 @@ SafeStatement Parser::parseAtom(char const*& input) {
 	return SafeStatement(new Statement(next.asInt()));
 }
 
-void Parser::resolveAll() {
+bool Parser::resolveAll() {
 	for (unsigned int i = 0; i < _unresolved.size(); i++) {
 		if (_functions.find(_unresolved[i].first) != _functions.end()) {
+			if (_unresolved[i].second->getNumArgs() != _functions[_unresolved[i].first]->getNumArgs()) {
+				printf("Num args differs from expected\n");
+				return false;
+			}
 			_unresolved[i].second->updateCallback((void*)_functions[_unresolved[i].first]->getFnPtr());
 			_unresolved.erase(_unresolved.begin() + i);
-			resolveAll();
-			return;
+			return resolveAll();
 		}
 	}
+	return true;
 }
 
 SafeStatement Parser::parseFunctionCall(char const*& input) {
@@ -94,10 +98,10 @@ SafeStatement Parser::parseFunctionCall(char const*& input) {
 	} else {
 		type = NativeCallback;
 		callback = nullptr;
-		numExpectedArgs = 0;
+		numExpectedArgs = -1;
 	}
 	
-	if (args.size() != numExpectedArgs) {
+	if (numExpectedArgs != -1 && args.size() != numExpectedArgs) {
 		printf("Expected %i args got %li\n", numExpectedArgs, args.size());
 		return nullptr;
 	}
@@ -139,6 +143,26 @@ SafeStatement Parser::parseBlock(char const*& input) {
 	return result;
 }
 
+bool Parser::parseFunctionArguments(char const*& input, std::vector<std::string>& argList) {
+
+	//discard lparen
+	Token next = _tokeniser.nextToken(input);
+
+	while (true) {
+		next = _tokeniser.nextToken(input);
+		if (next.id() == ID) {
+			argList.push_back(next.asString());
+		} else if (next.id() == RPAREN) {
+			break;
+		} else {
+			printf("Expected arg name or RPAREN\n");
+			return false;
+		}
+	}
+
+	return true;
+}
+
 bool Parser::parseFunction(char const*& input, std::map<std::string, SafeFunction>& functionList) {
 	
 	Token next = _tokeniser.nextToken(input);
@@ -148,9 +172,20 @@ bool Parser::parseFunction(char const*& input, std::map<std::string, SafeFunctio
 		printf("Expected function name\n");
 		return false;
 	}
-	
+
 	std::string name = next.asString();
-	
+
+	//Parse args if any are supplied
+	std::vector<std::string> args;
+
+	next = _tokeniser.peekToken(input);
+
+	if (next.id() == LPAREN) {
+		if (!parseFunctionArguments(input, args)) {
+			return false;
+		}
+	}
+		
 	next = _tokeniser.nextToken(input);
 	
 	if (next.id() != ARROW) {
@@ -160,7 +195,7 @@ bool Parser::parseFunction(char const*& input, std::map<std::string, SafeFunctio
 	
 	SafeStatement block = parseBlock(input);
 	CHECK(block);
-	functionList[name] = SafeFunction(new Function(block));
+	functionList[name] = SafeFunction(new Function(block, args.size()));
 
 	return true;
 }
@@ -176,15 +211,19 @@ bool Parser::innerParse(char const*& input, JIT::Scope* scope) {
 	if (next.id() == LPAREN) {
 		SafeStatement block = parseBlock(input);
 		CHECK(block);
-		Function fn = Function(block);
-		resolveAll();
+		Function fn = Function(block, 0);
+		if (!resolveAll()) {
+			return false;
+		}
 		fn.rewriteCallbacks();
 		printf("Line Result: %li\n", fn.run(scope));
 	} else if (next.id() == FUNCTION) {
 		if (!parseFunction(input, _functions)) {
 			return false;
 		}
-		resolveAll();
+		if (!resolveAll()) {
+			return false;
+		}
 		for (auto it = _functions.begin(); it != _functions.end(); it++) {
 			it->second->rewriteCallbacks();
 		}

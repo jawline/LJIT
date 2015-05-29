@@ -11,15 +11,18 @@ namespace JIT {
 		JFPTR _storedFn;
 		std::vector<std::pair<Statement*, size_t>> _unresolvedCallList;
 		size_t _fnSize;
+		size_t _numArgs;
 		SafeStatement _stmt;
 
 	public:
-		Function(SafeStatement const& stmt);
+		Function(SafeStatement const& stmt, size_t numArgs);
 		~Function();
 		
 		void rewriteCallbacks();
 		int64_t run(Scope* scope);
 		JFPTR getFnPtr();
+
+		size_t getNumArgs() const;
 	};
 	
 	typedef std::shared_ptr<Function> SafeFunction;

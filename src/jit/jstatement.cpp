@@ -28,6 +28,10 @@ void* Statement::getCallback() const {
   return _callback;
 }
 
+int Statement::getNumArgs() const {
+  return _args.size();
+}
+
 void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<Statement*, size_t>>& unresolvedList) {
   switch (_type) {
     case Atom:
@@ -94,7 +98,6 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
       }
       for (int i = _args.size(); i > 0; i--) {
         Helper::setArgumentStackTop(i, buffer);
-        printf("Pushed arg %i\n", i);
       }
       size_t addressStart = Helper::callFunction(_callback ? _callback : ((void*)Callbacks::unresolved), buffer);
       if (_callback == nullptr) {

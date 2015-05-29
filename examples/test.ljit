@@ -1,4 +1,4 @@
-function even -> (ifelse (set 0 (sub (get 0) 1)) (odd) (0))
-function odd -> (ifelse (set 0 (sub (get 0) 1)) (even) (1))
+function even (x) -> (ifelse (set 0 (sub (get 0) 1)) (odd 5) (0))
+function odd (x) -> (ifelse (set 0 (sub (get 0) 1)) (even 5) (1))
 (set 0 10)
-(even)
+(even 5)
