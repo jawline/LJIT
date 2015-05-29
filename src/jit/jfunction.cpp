@@ -26,6 +26,21 @@ void Function::prepare(SafeStatement const& stmt) {
   _fnSize = buffer.current();
 }
 
+void Function::resolveAll() {
+	if (!_storedFn) {
+		return;
+	}
+
+	for (unsigned int i = 0; i < _unresolvedCallList.size(); i++) {
+		if (!_unresolvedCallList[i].first->getCallback()) {
+			printf("STILL NOT ABLE TO RESOLVE ADDRESS\n");
+		} else {
+			printf("HEHEHEHE RESOLVED\n");
+			Helper::updateAddress(_storedFn, _unresolvedCallList[i].second, _unresolvedCallList[i].first->getCallback());
+		}
+	}
+}
+
 int64_t Function::run(Scope* scope) {
   return getFnPtr()(scope);
 }
