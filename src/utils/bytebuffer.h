@@ -20,6 +20,7 @@ namespace Assembler {
 
 		void insert(uint8_t byte);
 		void insert(uint16_t word);
+		void insert(int32_t num);
 		void insert(uint32_t num);
 		void insert(int64_t num);
 		void insert(uint8_t* data, size_t num);

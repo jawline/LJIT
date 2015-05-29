@@ -51,6 +51,14 @@ void ByteBuffer::insert(uint32_t num) {
 	bufferCurrentIter += sizeof(uint32_t);
 }
 
+void ByteBuffer::insert(int32_t num) {
+	if (bufferCurrentIter + sizeof(int32_t) >= bufferCurrentSize) {
+		expandBuffer();
+	}
+	insert(num, bufferCurrentIter);
+	bufferCurrentIter += sizeof(int32_t);
+}
+
 void ByteBuffer::insert(int64_t num) {
 	if (bufferCurrentIter + sizeof(int64_t) >= bufferCurrentSize) {
 		expandBuffer();
