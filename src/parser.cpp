@@ -76,6 +76,9 @@ SafeStatement Parser::parseFunctionCall(char const*& input) {
 	} else if (name.compare("if") == 0) {
 		type = If;
 		numExpectedArgs = 2;
+	} else if (name.compare("ifelse") == 0) {
+		type = If;
+		numExpectedArgs = 3;
 	} else if (name.compare("set") == 0) {
 		type = NativeCallback;
 		callback = (void*)Callbacks::set;
