@@ -59,13 +59,23 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
       _args[0]->write(buffer, unresolvedList);
       
       //Write a jump instruction with BS location
-      size_t addr = Helper::jumpRelativeTopEqualZero(buffer, 0xDEAD);
+      size_t elseAddr = Helper::jumpRelativeTopEqualZero(buffer, 0xDEAD);
       _args[1]->write(buffer, unresolvedList);
       
-      //Rewrite the relative locaiton to be the actual exit
+      //Write a jump location to avoid the else
+      size_t exitAddr = Helper::jumpRelativeTopEqualZero(buffer, 0xDEAD);
+      
+      size_t elseLocation = buffer.current();
+      
+      //The else will just push the number 0
+      Helper::pushNumber(0, buffer);
+      
+      //Rewrite the dummy relative locations to be the actual exit
       size_t exitLocation = buffer.current();
-      //TODO: Dirty dirty dirty
-      buffert.insert(addr, (uint32_t)(exitLocation - addr));
+
+      //TODO: Dirty? Nasty! Make do nice?
+      buffert.insert(elseAddr, (uint32_t)(elseLocation - addr));
+      buffert.insert(exitAddr, (uint32_t)(exitLocation - addr));
       break;
     }
     case NativeCallback: {
