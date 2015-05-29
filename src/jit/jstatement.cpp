@@ -68,7 +68,7 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
       size_t elseLocation = buffer.current();
       
       //The else will just push the number 0
-      Helper::pushNumber(123, buffer);
+      Helper::pushNumber(0, buffer);
       
       //Rewrite the dummy relative locations to be the actual exit
       size_t exitLocation = buffer.current();
