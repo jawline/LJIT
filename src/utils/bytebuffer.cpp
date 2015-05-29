@@ -71,6 +71,10 @@ void ByteBuffer::insert(uint32_t num, size_t at) {
 	*((uint32_t*)&buffer[at]) = num;
 }
 
+void ByteBuffer::insert(int32_t num, size_t at) {
+	*((int32_t*)&buffer[at]) = num;
+}
+
 void ByteBuffer::insert(int64_t num, size_t at) {
 	*((int64_t*)&buffer[at]) = num;
 }

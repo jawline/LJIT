@@ -68,14 +68,16 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
       size_t elseLocation = buffer.current();
       
       //The else will just push the number 0
-      Helper::pushNumber(0, buffer);
+      Helper::pushNumber(123, buffer);
       
       //Rewrite the dummy relative locations to be the actual exit
       size_t exitLocation = buffer.current();
+      auto elseJmpNextInstruction = elseAddr + sizeof(int32_t);
+      auto exitJmpNextInstruction = exitAddr + sizeof(int32_t);
 
       //TODO: Dirty? Nasty! Make do nice?
-      buffer.insert((uint32_t)(elseLocation - elseAddr), elseAddr);
-      buffer.insert((uint32_t)(exitLocation - exitAddr), exitAddr);
+      buffer.insert((int32_t)(elseLocation - elseJmpNextInstruction), elseAddr);
+      buffer.insert((int32_t)(exitLocation - exitJmpNextInstruction), exitAddr);
       break;
     }
     case NativeCallback: {
