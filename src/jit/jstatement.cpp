@@ -9,6 +9,11 @@ Statement::Statement(int64_t val) {
   _val = val;
 }
 
+Statement::Statement(StatementType type, size_t argNum) {
+  _type = type;
+  _argNum = argNum;
+}
+
 Statement::Statement(StatementType type, std::vector<SafeStatement> const& args) {
   _type = type;
   _args = args;

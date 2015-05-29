@@ -36,7 +36,7 @@ bool Parser::resolveAll() {
 	return true;
 }
 
-SafeStatement Parser::parseFunctionCall(char const*& input) {
+SafeStatement Parser::parseFunctionCall(char const*& input, std::vector<std::string> const& argList) {
 
 	//Get function call name
 	Token next = _tokeniser.nextToken(input);
@@ -49,7 +49,7 @@ SafeStatement Parser::parseFunctionCall(char const*& input) {
 		next = _tokeniser.peekToken(input);
 		
 		if (next.id() == LPAREN) {
-			SafeStatement arg = parseBlock(input);
+			SafeStatement arg = parseBlock(input, argList);
 			CHECK(arg);
 			args.push_back(arg);
 		} else if (next.id() == NUM) {
@@ -115,7 +115,7 @@ SafeStatement Parser::parseFunctionCall(char const*& input) {
 	return result;
 }
 
-SafeStatement Parser::parseBlock(char const*& input) {
+SafeStatement Parser::parseBlock(char const*& input, std::vector<std::string> const& argList) {
 
 	//Discard lparen
 	Token next = _tokeniser.nextToken(input);
@@ -123,7 +123,7 @@ SafeStatement Parser::parseBlock(char const*& input) {
 	SafeStatement result;
 
 	if (next.id() == ID) {
-		result = parseFunctionCall(input);
+		result = parseFunctionCall(input, argList);
 	} else if (next.id() == NUM) {
 		result = parseAtom(input);
 	} else {
@@ -193,7 +193,7 @@ bool Parser::parseFunction(char const*& input, std::map<std::string, SafeFunctio
 		return false;
 	}
 	
-	SafeStatement block = parseBlock(input);
+	SafeStatement block = parseBlock(input, args);
 	CHECK(block);
 	functionList[name] = SafeFunction(new Function(block, args.size()));
 
@@ -209,7 +209,7 @@ bool Parser::innerParse(char const*& input, JIT::Scope* scope) {
 	}
 
 	if (next.id() == LPAREN) {
-		SafeStatement block = parseBlock(input);
+		SafeStatement block = parseBlock(input, std::vector<std::string>());
 		CHECK(block);
 		Function fn = Function(block, 0);
 		if (!resolveAll()) {

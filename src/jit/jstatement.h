@@ -8,6 +8,7 @@ namespace JIT {
 
     enum StatementType {
         Atom,
+        Arg,
         Add,
         Subtract,
         Multiply,
@@ -23,9 +24,11 @@ namespace JIT {
           StatementType _type;
           int64_t _val;
           void* _callback;
+          size_t _argNum;
           std::vector<SafeStatement> _args;
         public:
           Statement(int64_t val);
+          Statement(StatementType type, size_t argNum);
           Statement(StatementType type, std::vector<SafeStatement> const& args);
           Statement(StatementType type, void* callback, std::vector<SafeStatement> const& args);
           void write(Assembler::ByteBuffer& buffer, std::vector<std::pair<Statement*, size_t>>& unresolvedList);

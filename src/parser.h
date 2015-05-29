@@ -16,8 +16,8 @@ namespace Assembler {
 		map<string, JIT::SafeFunction> _functions;
 		vector<pair<string, JIT::SafeStatement>> _unresolved;
 		JIT::SafeStatement parseAtom(char const*& input);
-		JIT::SafeStatement parseFunctionCall(char const*& input);
-		JIT::SafeStatement parseBlock(char const*& input);
+		JIT::SafeStatement parseFunctionCall(char const*& input, std::vector<std::string> const& argList);
+		JIT::SafeStatement parseBlock(char const*& input, std::vector<std::string> const& argList);
 		bool resolveAll();
 		bool parseFunctionArguments(char const*& input, std::vector<std::string>& argList);
 		bool parseFunction(char const*& input, map<string, JIT::SafeFunction>& functionList);
