@@ -53,6 +53,20 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
       _args[1]->write(buffer, unresolvedList);
       Helper::divTopTwoStack(buffer);
       break;
+    case If: {
+      
+      //Execute condition
+      _args[0]->write(buffer, unresolvedList);
+      
+      //TODO: relative jne exitLocation 
+      size_t addr = Helper::jumpTopEqualZero(buffer, (void*) 0xDEADBA);
+      _args[1]->write(buffer, unresolvedList);
+      size_t exitLocation = buffer.current();
+      
+      //TODO: Dirty dirty dirty
+      buffert.insert(addr, (uint32_t)(exitLocation - addr));
+      break;    
+    }
     case NativeCallback: {
       Helper::setArgumentZeroScope(buffer);
       for (int i = _args.size(); i > 0; i--) {
