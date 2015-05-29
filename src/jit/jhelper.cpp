@@ -34,13 +34,14 @@ void Helper::loadAddress(void* address, ByteBuffer& buffer) {
     buffer.insert((int64_t) address);
 }
 
-void Helper::callFunction(void* fnPtr, ByteBuffer& buffer) {
+size_t Helper::callFunction(void* fnPtr, ByteBuffer& buffer) {
     //TODO: Work out the damn call addr instruction and use that instead of loading it into a register.
-    loadAddress(fnPtr, buffer);
+    size_t addr = loadAddress(fnPtr, buffer);
     //call fnPtr
     buffer.insert((uint8_t)0xFF);
     buffer.insert((uint8_t)0xD0);
     pushBasicResult(buffer);
+    return addr;
 }
 
 void Helper::pushNumber(int64_t value, ByteBuffer& buffer) {
