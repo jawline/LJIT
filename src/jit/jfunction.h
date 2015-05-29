@@ -17,7 +17,7 @@ namespace JIT {
 		Function(SafeStatement const& stmt);
 		~Function();
 		
-		void resolveAll();
+		void rewriteCallbacks();
 		int64_t run(Scope* scope);
 		JFPTR getFnPtr();
 	};
