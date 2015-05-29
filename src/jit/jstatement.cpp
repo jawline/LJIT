@@ -58,14 +58,15 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
       //Execute condition
       _args[0]->write(buffer, unresolvedList);
       
-      //TODO: relative jne exitLocation 
+      //Write a jump instruction with BS location
       size_t addr = Helper::jumpRelativeTopEqualZero(buffer, 0xDEAD);
       _args[1]->write(buffer, unresolvedList);
-      size_t exitLocation = buffer.current();
       
+      //Rewrite the relative locaiton to be the actual exit
+      size_t exitLocation = buffer.current();
       //TODO: Dirty dirty dirty
       buffert.insert(addr, (uint32_t)(exitLocation - addr));
-      break;    
+      break;
     }
     case NativeCallback: {
       Helper::setArgumentZeroScope(buffer);
