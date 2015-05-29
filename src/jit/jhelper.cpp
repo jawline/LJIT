@@ -51,7 +51,9 @@ size_t Helper::callFunction(void* fnPtr, ByteBuffer& buffer) {
 size_t Helper::jumpRelative(Assembler::ByteBuffer& buffer, int32_t distance) {
     //jmp $+distance
     buffer.insert((uint8_t)0xE9);
+    size_t addr = buffer.current();
     buffer.insert(distance);
+    return addr;
 }
 
 size_t Helper::jumpRelativeTopEqualZero(Assembler::ByteBuffer& buffer, int32_t distance) {
