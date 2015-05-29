@@ -24,7 +24,7 @@ void Statement::updateCallback(void* callback) {
   _callback = callback;
 }
 
-void Statement::write(Assembler::ByteBuffer& buffer) {
+void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<Statement*, size_t>>& unresolvedList) {
   switch (_type) {
     case Atom:
       Helper::pushNumber(_val, buffer);
@@ -57,11 +57,12 @@ void Statement::write(Assembler::ByteBuffer& buffer) {
       for (int i = _args.size() - 1; i >= 0; i--) {
         Helper::setArgumentStackTop(i+1, buffer);
       }
+      size_t addressStart = Helper::callFunction(_callback, buffer);
       if (_callback == nullptr) {
         printf("Cannot produce nativecall, _callback unresolved\n");
-        return;
+        printf("Adding to unresolved list\n");
+        unresolvedList.push_back(std::pair<Statement*, size_t location>(this, addressStart))
       }
-      Helper::callFunction(_callback, buffer);
       break;
     default:
       printf("Could not JIT\n");
