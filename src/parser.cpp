@@ -73,6 +73,9 @@ SafeStatement Parser::parseFunctionCall(char const*& input) {
 	} else if (name.compare("div") == 0) {
 		type = Divide;
 		numExpectedArgs = 2;
+	} else if (name.compare("if") == 0) {
+		type = If;
+		numExpectedArgs = 2;
 	} else if (name.compare("set") == 0) {
 		type = NativeCallback;
 		callback = (void*)Callbacks::set;
@@ -85,9 +88,6 @@ SafeStatement Parser::parseFunctionCall(char const*& input) {
 		type = NativeCallback;
 		callback = (void*)Callbacks::print;
 		numExpectedArgs = 1;
-	} else if (name.compare("if") == 0) {
-		type = If;
-		numExpectedArgs = 2;
 	} else {
 		type = NativeCallback;
 		callback = nullptr;
