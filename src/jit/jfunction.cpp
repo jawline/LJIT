@@ -20,6 +20,12 @@ void Function::prepare(SafeStatement const& stmt) {
   ByteBuffer buffer;
 
   Helper::insertPrologue(buffer);
+
+  //Push all the args so they sit left to right from ebp
+  for (unsigned int i = 0; i < _numArgs; i++) {
+  	Helper::pushArgument(i, buffer);
+  }
+
   stmt->write(buffer, _unresolvedCallList);
   Helper::insertEpilogue(buffer);
   

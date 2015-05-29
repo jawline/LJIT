@@ -75,6 +75,10 @@ size_t Helper::jumpRelativeTopEqualZero(Assembler::ByteBuffer& buffer, int32_t d
     return addr;
 }
 
+void Helper::pushArgument(unsigned int num, Assembler::ByteBuffer& buffer) {
+    printf("Pushing an argument but I don't know how yet aaah\n");
+}
+
 void Helper::pushNumber(int64_t value, ByteBuffer& buffer) {
     //mov _val, RAX
     uint8_t mrax[] = { 0x48, 0xB8 };
