@@ -72,10 +72,12 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
       
       //Rewrite the dummy relative locations to be the actual exit
       size_t exitLocation = buffer.current();
+      auto elseJmpNextInstruction = elseAddr + sizeof(int32_t);
+      auto exitJmpNextInstruction = exitAddr + sizeof(int32_t);
 
       //TODO: Dirty? Nasty! Make do nice?
-      buffert.insert(elseAddr, (int32_t)(elseLocation - (elseAddr + 4)));
-      buffert.insert(exitAddr, (int32_t)(exitLocation - (exitAddr + 4)));
+      buffert.insert(elseAddr, (int32_t)(elseLocation - elseJmpNextInstruction));
+      buffert.insert(exitAddr, (int32_t)(exitLocation - exitJmpNextInstruction));
       break;
     }
     case NativeCallback: {
