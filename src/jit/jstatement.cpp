@@ -67,8 +67,12 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
       
       size_t elseLocation = buffer.current();
       
-      //The else will just push the number 0
-      Helper::pushNumber(0, buffer);
+      if (_args.size() == 3) {
+        _args[2]->write(buffer, unresolvedList);
+      } else {
+        //The there is no else will just push the number 0
+        Helper::pushNumber(0, buffer);
+      }
       
       //Rewrite the dummy relative locations to be the actual exit
       size_t exitLocation = buffer.current();
