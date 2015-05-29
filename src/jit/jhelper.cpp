@@ -147,6 +147,23 @@ void Helper::setArgumentStackTop(unsigned int num, Assembler::ByteBuffer& buffer
             buffer.insert((uint8_t)0x5A);
             break;            
         }
+        case 3: {
+            //pop rcx
+            buffer.insert((uint8_t)0x59);
+            break;            
+        }
+        case 4: {
+            //pop r8
+            buffer.insert((uint8_t)0x41);
+            buffer.insert((uint8_t)0x58);
+            break;            
+        }
+        case 5: {
+            //pop r9
+            buffer.insert((uint8_t)0x41);
+            buffer.insert((uint8_t)0x59);
+            break;            
+        }
         default:
             printf("UNSUPPORTED ARG NUM %i\n", num);
             return;
