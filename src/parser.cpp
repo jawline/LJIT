@@ -172,7 +172,7 @@ bool Parser::innerParse(char const*& input, JIT::Scope* scope) {
 		CHECK(block);
 		Function fn = Function(block);
 		resolveAll();
-		fn.resolveAll();
+		fn.rewriteCallbacks();
 		printf("Line Result: %li\n", fn.run(scope));
 	} else if (next.id() == FUNCTION) {
 		if (!parseFunction(input, _functions)) {
@@ -180,7 +180,7 @@ bool Parser::innerParse(char const*& input, JIT::Scope* scope) {
 		}
 		resolveAll();
 		for (auto it = _functions.begin(); it != _functions.end(); it++) {
-			it->second->resolveAll();
+			it->second->rewriteCallbacks();
 		}
 	} else {
 		printf("Expected LPAREN\n");
