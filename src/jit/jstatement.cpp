@@ -59,7 +59,7 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
       _args[0]->write(buffer, unresolvedList);
       
       //TODO: relative jne exitLocation 
-      size_t addr = Helper::jumpTopEqualZero(buffer, (void*) 0xDEADBA);
+      size_t addr = Helper::jumpRelativeTopEqualZero(buffer, 0xDEAD);
       _args[1]->write(buffer, unresolvedList);
       size_t exitLocation = buffer.current();
       
