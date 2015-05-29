@@ -74,8 +74,8 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
       size_t exitLocation = buffer.current();
 
       //TODO: Dirty? Nasty! Make do nice?
-      buffert.insert(elseAddr, (uint32_t)(elseLocation - addr));
-      buffert.insert(exitAddr, (uint32_t)(exitLocation - addr));
+      buffert.insert(elseAddr, (int32_t)(elseLocation - (elseAddr + 4)));
+      buffert.insert(exitAddr, (int32_t)(exitLocation - (exitAddr + 4)));
       break;
     }
     case NativeCallback: {
