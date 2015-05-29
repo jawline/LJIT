@@ -36,7 +36,7 @@ void Function::rewriteCallbacks() {
 		if (!_unresolvedCallList[i].first->getCallback()) {
 			printf("STILL NOT ABLE TO RESOLVE ADDRESS\n");
 		} else {
-			printf("HEHEHEHE RESOLVED\n");
+			printf("HEHEHEHE RESOLVED %x %x\n", _storedFn, _unresolvedCallList[i].first->getCallback());
 			Helper::updateAddress(_storedFn, _unresolvedCallList[i].second, _unresolvedCallList[i].first->getCallback());
 		}
 	}
