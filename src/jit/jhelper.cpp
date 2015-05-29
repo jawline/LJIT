@@ -118,6 +118,10 @@ void Helper::setArgument(unsigned int num, int64_t val, Assembler::ByteBuffer& b
     }
 }
 
+void Helper::updateAddress(JFPTR ptr, size_t start, void* newAddress) {
+    *(((void**)ptr) + start) = newAddress;
+}
+
 void Helper::setArgumentZeroScope(Assembler::ByteBuffer& buffer) {
     uint8_t mvR12Rdi[] = { 0x4C, 0x89, 0xE7 };
     buffer.insert(mvR12Rdi, sizeof(mvR12Rdi));
