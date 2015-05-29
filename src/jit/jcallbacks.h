@@ -7,6 +7,7 @@ namespace JIT {
   class Callbacks {
     public:
       static int64_t print(Scope* scope, int64_t val);
+      static int64_t unresolved(Scope* scope);
       static int64_t set(Scope* scope, int64_t idx, int64_t val);
       static int64_t get(Scope* scope, int64_t idx);
   };
