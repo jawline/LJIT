@@ -102,8 +102,6 @@ SafeStatement Parser::parseFunctionCall(char const*& input) {
 		_unresolved.push_back(pair<string, SafeStatement>(name, result));
 	}
 
-	resolveAll();
-
 	return result;
 }
 
@@ -173,12 +171,17 @@ bool Parser::innerParse(char const*& input, JIT::Scope* scope) {
 		SafeStatement block = parseBlock(input);
 		CHECK(block);
 		Function fn = Function(block);
+		resolveAll();
+		fn.resolveAll();
 		printf("Line Result: %li\n", fn.run(scope));
 	} else if (next.id() == FUNCTION) {
 		if (!parseFunction(input, _functions)) {
 			return false;
 		}
 		resolveAll();
+		for (auto it = _functions.begin(); it != _functions.end(); it++) {
+			it->second->resolveAll();
+		}
 	} else {
 		printf("Expected LPAREN\n");
 		return false;
