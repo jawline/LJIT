@@ -16,9 +16,11 @@ namespace Assembler {
 		map<string, JIT::SafeFunction> _functions;
 		vector<pair<string, JIT::SafeStatement>> _unresolved;
 		JIT::SafeStatement parseAtom(char const*& input);
+		JIT::SafeStatement parseArg(char const*& input, std::vector<std::string> const& argList);
 		JIT::SafeStatement parseFunctionCall(char const*& input, std::vector<std::string> const& argList);
 		JIT::SafeStatement parseBlock(char const*& input, std::vector<std::string> const& argList);
 		bool resolveAll();
+		int getArg(std::string arg, std::vector<std::string> const& argList);
 		bool parseFunctionArguments(char const*& input, std::vector<std::string>& argList);
 		bool parseFunction(char const*& input, map<string, JIT::SafeFunction>& functionList);
 		bool innerParse(char const*& input, JIT::Scope* scope);

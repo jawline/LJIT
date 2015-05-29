@@ -102,7 +102,7 @@ SafeStatement Parser::parseFunctionCall(char const*& input, std::vector<std::str
 	}
 	
 	if (numExpectedArgs != -1 && args.size() != numExpectedArgs) {
-		printf("Expected %i args got %li\n", numExpectedArgs, args.size());
+		printf("Expected %i args got %li on %s\n", numExpectedArgs, args.size(), name.c_str());
 		return nullptr;
 	}
 
@@ -115,6 +115,20 @@ SafeStatement Parser::parseFunctionCall(char const*& input, std::vector<std::str
 	return result;
 }
 
+int Parser::getArg(std::string arg, std::vector<std::string> const& argList) {
+	for (unsigned int i = 0; i < argList.size(); i++) {
+		if (argList[i].compare(arg) == 0) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+JIT::SafeStatement Parser::parseArg(char const*& input, std::vector<std::string> const& argList) {
+	Token next = _tokeniser.nextToken(input);
+	return SafeStatement(new Statement(Arg, getArg(next.asString(), argList)));
+}
+
 SafeStatement Parser::parseBlock(char const*& input, std::vector<std::string> const& argList) {
 
 	//Discard lparen
@@ -123,7 +137,16 @@ SafeStatement Parser::parseBlock(char const*& input, std::vector<std::string> co
 	SafeStatement result;
 
 	if (next.id() == ID) {
-		result = parseFunctionCall(input, argList);
+
+		//Peek the name
+		next = _tokeniser.peekToken(input);
+
+		if (getArg(next.asString(), argList) != -1) {
+			result = parseArg(input, argList);
+		} else {
+			result = parseFunctionCall(input, argList);
+		}
+
 	} else if (next.id() == NUM) {
 		result = parseAtom(input);
 	} else {

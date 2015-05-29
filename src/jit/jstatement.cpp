@@ -62,6 +62,9 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
       _args[1]->write(buffer, unresolvedList);
       Helper::divTopTwoStack(buffer);
       break;
+    case Arg:
+      printf("I don't know how to get args yet\n");
+      break;
     case If: {
       
       //Execute condition
