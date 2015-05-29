@@ -19,7 +19,7 @@ void Function::prepare(SafeStatement const& stmt) {
   ByteBuffer buffer;
 
   Helper::insertPrologue(buffer);
-  stmt->write(buffer);
+  stmt->write(buffer, _unresolvedCallList);
   Helper::insertEpilogue(buffer);
   
   _storedFn = Helper::prepareFunctionPointer(buffer);

@@ -34,38 +34,39 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
       Helper::pushNumber(_val, buffer);
       break;
     case Add:
-      _args[0]->write(buffer);
-      _args[1]->write(buffer);
+      _args[0]->write(buffer, unresolvedList);
+      _args[1]->write(buffer, unresolvedList);
       Helper::addTopTwoStack(buffer);
       break;
     case Subtract:
-      _args[0]->write(buffer);
-      _args[1]->write(buffer);
+      _args[0]->write(buffer, unresolvedList);
+      _args[1]->write(buffer, unresolvedList);
       Helper::subTopTwoStack(buffer);
       break;
     case Multiply:
-      _args[0]->write(buffer);
-      _args[1]->write(buffer);
+      _args[0]->write(buffer, unresolvedList);
+      _args[1]->write(buffer, unresolvedList);
       Helper::mulTopTwoStack(buffer);
       break;
     case Divide:
-      _args[0]->write(buffer);
-      _args[1]->write(buffer);
+      _args[0]->write(buffer, unresolvedList);
+      _args[1]->write(buffer, unresolvedList);
       Helper::divTopTwoStack(buffer);
       break;
-    case NativeCallback:
+    case NativeCallback: {
       Helper::setArgumentZeroScope(buffer);
-      for (int i = _args.size() - 1; i >= 0; i--) {
-        _args[i]->write(buffer);
-        Helper::setArgumentStackTop(_args.size() - i +1, buffer);
+      for (int i = _args.size(); i > 0; i--) {
+        _args[_args.size() - i]->write(buffer, unresolvedList);
+        Helper::setArgumentStackTop(_args.size() - i + 1, buffer);
       }
       size_t addressStart = Helper::callFunction(_callback, buffer);
       if (_callback == nullptr) {
         printf("Cannot produce nativecall, _callback unresolved\n");
         printf("Adding to unresolved list\n");
-        unresolvedList.push_back(std::pair<Statement*, size_t>(this, addressStart))
+        unresolvedList.push_back(std::pair<Statement*, size_t>(this, addressStart));
       }
       break;
+    }
     default:
       printf("Could not JIT\n");
       break;
