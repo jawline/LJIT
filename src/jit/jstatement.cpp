@@ -24,6 +24,10 @@ void Statement::updateCallback(void* callback) {
   _callback = callback;
 }
 
+void* Statement::getCallback() const {
+  return _callback;
+}
+
 void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<Statement*, size_t>>& unresolvedList) {
   switch (_type) {
     case Atom:
