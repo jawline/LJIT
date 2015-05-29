@@ -63,7 +63,7 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
       _args[1]->write(buffer, unresolvedList);
       
       //Write a jump location to avoid the else
-      size_t exitAddr = Helper::jumpRelativeTopEqualZero(buffer, 0xDEAD);
+      size_t exitAddr = Helper::jumpRelative(buffer, 0xDEAD);
       
       size_t elseLocation = buffer.current();
       
