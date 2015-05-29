@@ -165,7 +165,7 @@ void Helper::setArgumentStackTop(unsigned int num, Assembler::ByteBuffer& buffer
             break;            
         }
         default:
-            printf("UNSUPPORTED ARG NUM %i\n", num);
+            printf("Outside of arg register range (%i)\n", num);
             return;
     }
 }
