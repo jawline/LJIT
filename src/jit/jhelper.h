@@ -12,13 +12,13 @@ namespace JIT {
   private:
     static void pushBasicResult(Assembler::ByteBuffer& buffer);
     static void popTwo(Assembler::ByteBuffer& buffer);
-    static void loadAddress(void* address, Assembler::ByteBuffer& buffer);
+    static size_t loadAddress(void* address, Assembler::ByteBuffer& buffer);
 
   public:
     static void insertPrologue(Assembler::ByteBuffer& buffer);
     static void insertEpilogue(Assembler::ByteBuffer& buffer);
     static void pushNumber(int64_t value, Assembler::ByteBuffer& buffer);
-    static void callFunction(void* fnPtr, Assembler::ByteBuffer& buffer);
+    static size_t callFunction(void* fnPtr, Assembler::ByteBuffer& buffer);
     static void setArgument(unsigned int num, int64_t val, Assembler::ByteBuffer& buffer);
     static void setArgumentStackTop(unsigned int num, Assembler::ByteBuffer& buffer);
     static void setArgumentZeroScope(Assembler::ByteBuffer& buffer);
