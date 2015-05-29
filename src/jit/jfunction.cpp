@@ -26,7 +26,8 @@ void Function::prepare(SafeStatement const& stmt) {
   _fnSize = buffer.current();
 }
 
-void Function::resolveAll() {
+void Function::rewriteCallbacks() {
+
 	if (!_storedFn) {
 		return;
 	}
