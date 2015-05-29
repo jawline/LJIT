@@ -9,6 +9,7 @@ namespace JIT {
 	private:
 		void prepare(SafeStatement const& stmt);
 		JFPTR _storedFn;
+		std::vector<std::pair<Statement*, size_t>> _unresolvedCallList;
 		size_t _fnSize;
 		SafeStatement _stmt;
 
