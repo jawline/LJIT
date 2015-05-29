@@ -86,9 +86,15 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
     }
     case NativeCallback: {
       Helper::setArgumentZeroScope(buffer);
+
+      //TODO: SCARY! This will break with over 6 args, work out a nice way to do this
+      printf("TODO: NativeCallback arg set is broken with over 6 args\n");
+      for (unsigned int i = 0; i < _args.size(); i++) {
+        _args[i]->write(buffer, unresolvedList);
+      }
       for (int i = _args.size(); i > 0; i--) {
-        _args[_args.size() - i]->write(buffer, unresolvedList);
-        Helper::setArgumentStackTop(_args.size() - i + 1, buffer);
+        Helper::setArgumentStackTop(i, buffer);
+        printf("Pushed arg %i\n", i);
       }
       size_t addressStart = Helper::callFunction(_callback ? _callback : ((void*)Callbacks::unresolved), buffer);
       if (_callback == nullptr) {

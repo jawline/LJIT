@@ -41,9 +41,11 @@ size_t Helper::loadAddress(void* address, ByteBuffer& buffer) {
 size_t Helper::callFunction(void* fnPtr, ByteBuffer& buffer) {
     //TODO: Work out the damn call addr instruction and use that instead of loading it into a register.
     size_t addr = loadAddress(fnPtr, buffer);
+    
     //call fnPtr
     buffer.insert((uint8_t)0xFF);
     buffer.insert((uint8_t)0xD0);
+
     pushBasicResult(buffer);
     return addr;
 }
