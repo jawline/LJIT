@@ -59,7 +59,7 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
         _args[_args.size() - i]->write(buffer, unresolvedList);
         Helper::setArgumentStackTop(_args.size() - i + 1, buffer);
       }
-      size_t addressStart = Helper::callFunction(_callback, buffer);
+      size_t addressStart = Helper::callFunction(_callback ? _callback : Callbacks::unresolved, buffer);
       if (_callback == nullptr) {
         printf("Cannot produce nativecall, _callback unresolved\n");
         printf("Adding to unresolved list\n");

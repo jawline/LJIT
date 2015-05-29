@@ -122,7 +122,8 @@ void Helper::setArgument(unsigned int num, int64_t val, Assembler::ByteBuffer& b
 }
 
 void Helper::updateAddress(JFPTR ptr, size_t start, void* newAddress) {
-    *(((void**)ptr) + start) = newAddress;
+    auto start_addr = ((uint8_t*)ptr) + start;
+    *((int64_t*)start_addr) = (int64_t) newAddress;
 }
 
 void Helper::setArgumentZeroScope(Assembler::ByteBuffer& buffer) {
