@@ -1,4 +1,5 @@
 function f -> (if (get 0) (555))
+(set 0 0)
 (f)
 (set 0 150)
 (f)
