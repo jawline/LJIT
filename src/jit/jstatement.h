@@ -27,7 +27,7 @@ namespace JIT {
           Statement(int64_t val);
           Statement(StatementType type, std::vector<SafeStatement> const& args);
           Statement(StatementType type, void* callback, std::vector<SafeStatement> const& args);
-          void write(Assembler::ByteBuffer& buffer);
+          void write(Assembler::ByteBuffer& buffer, std::vector<std::pair<Statement*, size_t>>& unresolvedList);
 
           void updateCallback(void* newCallback);
     };
