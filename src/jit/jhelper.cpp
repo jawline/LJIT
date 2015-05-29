@@ -27,11 +27,13 @@ void Helper::insertEpilogue(ByteBuffer& buffer) {
     buffer.insert(Template::epilogue, Template::epilogueSize());
 }
 
-void Helper::loadAddress(void* address, ByteBuffer& buffer) {
+size_t Helper::loadAddress(void* address, ByteBuffer& buffer) {
     //mov _val, RAX
     uint8_t mrax[] = { 0x48, 0xB8 };
     buffer.insert(mrax, sizeof(mrax));
+    size_t addr = buffer.current();
     buffer.insert((int64_t) address);
+    return addr;
 }
 
 size_t Helper::callFunction(void* fnPtr, ByteBuffer& buffer) {
