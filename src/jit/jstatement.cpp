@@ -57,7 +57,7 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
       Helper::setArgumentZeroScope(buffer);
       for (int i = _args.size() - 1; i >= 0; i--) {
         _args[i]->write(buffer);
-        Helper::setArgumentStackTop(i+1, buffer);
+        Helper::setArgumentStackTop(_args.size() - i +1, buffer);
       }
       size_t addressStart = Helper::callFunction(_callback, buffer);
       if (_callback == nullptr) {
