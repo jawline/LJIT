@@ -12,6 +12,7 @@ namespace JIT {
         Subtract,
         Multiply,
         Divide,
+        If,
         NativeCallback
     };
 
