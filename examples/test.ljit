@@ -1,3 +1,4 @@
+function even -> (ifelse (set 0 (sub (get 0) 1)) (odd) (0))
+function odd -> (ifelse (set 0 (sub (get 0) 1)) (even) (1))
 (set 0 10)
-function recurse -> (ifelse (set 0 (sub (get 0) 1)) (print (recurse)) (get 0))
-(recurse)
+(even)
