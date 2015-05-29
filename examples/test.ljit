@@ -1,1 +1,2 @@
-function f(x) -> (ifelse (x) (f(sub x 1)) (0))
+function f(x) -> (ifelse (x) (f(sub (x) 1)) (0))
+(f 50)

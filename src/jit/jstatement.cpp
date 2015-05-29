@@ -64,6 +64,7 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
       break;
     case Arg:
       printf("I don't know how to get args yet\n");
+      Helper::pushNumber(0, buffer);
       break;
     case If: {
       
