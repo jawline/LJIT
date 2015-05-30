@@ -27,6 +27,7 @@ namespace JIT {
     static void subTopTwoStack(Assembler::ByteBuffer& buffer);
     static void mulTopTwoStack(Assembler::ByteBuffer& buffer);
     static void divTopTwoStack(Assembler::ByteBuffer& buffer);
+    static void pushArgumentTop(int argN, Assembler::ByteBuffer& buffer);
     static size_t jumpRelativeTopEqualZero(Assembler::ByteBuffer& buffer, int32_t distance);
     static size_t jumpRelative(Assembler::ByteBuffer& buffer, int32_t distance);
     static void updateAddress(JFPTR ptr, size_t start, void* newAddress);

@@ -164,6 +164,12 @@ void Helper::setArgumentZeroScope(Assembler::ByteBuffer& buffer) {
     buffer.insert(mvR12Rdi, sizeof(mvR12Rdi));
 }
 
+void Helper::pushArgumentTop(int argN, Assembler::ByteBuffer& buffer) {
+    uint8_t mvRbpRax[] { 0x48, 0x8B, 0x45, (uint8_t)(argN * 8)};
+    buffer.insert(mvRbpRax, sizeof(mvRbpRax));
+    pushBasicResult(buffer);
+}
+
 void Helper::setArgumentStackTop(unsigned int num, Assembler::ByteBuffer& buffer) {
     switch (num) {
         case 0: {
