@@ -19,7 +19,7 @@ namespace JIT {
 		~Function();
 		
 		void rewriteCallbacks();
-		int64_t run(Scope* scope);
+		int64_t run();
 		JFPTR getFnPtr();
 
 		size_t getNumArgs() const;

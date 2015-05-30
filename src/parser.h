@@ -23,7 +23,7 @@ namespace Assembler {
 		int getArg(std::string arg, std::vector<std::string> const& argList);
 		bool parseFunctionArguments(char const*& input, std::vector<std::string>& argList);
 		bool parseFunction(char const*& input, map<string, JIT::SafeFunction>& functionList);
-		bool innerParse(char const*& input, JIT::Scope* scope);
+		bool innerParse(char const*& input);
 	public:
 		Parser();
 		~Parser();

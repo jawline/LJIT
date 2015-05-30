@@ -22,11 +22,9 @@ void Function::prepare(SafeStatement const& stmt) {
   Helper::insertPrologue(buffer);
 
   //Push all the args so they sit left to right from ebp
-  for (unsigned int i = 0; i < _numArgs; i++) {
-  	Helper::pushArgument(i, buffer);
-  }
-
+  Helper::functionEntryPushArgs(_numArgs, buffer);
   stmt->write(buffer, _unresolvedCallList);
+  Helper::functionExitDiscardArgs(_numArgs, buffer);
   Helper::insertEpilogue(buffer);
   
   _storedFn = Helper::prepareFunctionPointer(buffer);
@@ -53,8 +51,8 @@ void Function::rewriteCallbacks() {
 	}
 }
 
-int64_t Function::run(Scope* scope) {
-  return getFnPtr()(scope);
+int64_t Function::run() {
+  return getFnPtr()();
 }
 
 JFPTR Function::getFnPtr() {

@@ -1,12 +1,13 @@
 #ifndef _JIT_HELPER_DEF_H_
 #define _JIT_HELPER_DEF_H_
 #include <stdint.h>
+#include <vector>
+#include <string>
 #include "../utils/bytebuffer.h"
-#include "jscope.h"
 
 namespace JIT {
   
-  typedef int64_t (*JFPTR)(Scope* scope);
+  typedef int64_t (*JFPTR)();
   
   class Helper {
   private:
@@ -19,10 +20,10 @@ namespace JIT {
     static void insertEpilogue(Assembler::ByteBuffer& buffer);
     static void pushNumber(int64_t value, Assembler::ByteBuffer& buffer);
     static size_t callFunction(void* fnPtr, Assembler::ByteBuffer& buffer);
-    static void pushArgument(unsigned int num, Assembler::ByteBuffer& buffer);
+    static void functionEntryPushArgs(unsigned int num, Assembler::ByteBuffer& buffer);
+    static void functionExitDiscardArgs(unsigned int num, Assembler::ByteBuffer& buffer);
     static void setArgument(unsigned int num, int64_t val, Assembler::ByteBuffer& buffer);
     static void setArgumentStackTop(unsigned int num, Assembler::ByteBuffer& buffer);
-    static void setArgumentZeroScope(Assembler::ByteBuffer& buffer);
     static void addTopTwoStack(Assembler::ByteBuffer& buffer);
     static void subTopTwoStack(Assembler::ByteBuffer& buffer);
     static void mulTopTwoStack(Assembler::ByteBuffer& buffer);

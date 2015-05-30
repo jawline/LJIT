@@ -223,7 +223,7 @@ bool Parser::parseFunction(char const*& input, std::map<std::string, SafeFunctio
 	return true;
 }
 
-bool Parser::innerParse(char const*& input, JIT::Scope* scope) {
+bool Parser::innerParse(char const*& input) {
 	
 	Token next = _tokeniser.peekToken(input);
 
@@ -239,7 +239,7 @@ bool Parser::innerParse(char const*& input, JIT::Scope* scope) {
 			return false;
 		}
 		fn.rewriteCallbacks();
-		printf("Line Result: %li\n", fn.run(scope));
+		printf("Line Result: %li\n", fn.run());
 	} else if (next.id() == FUNCTION) {
 		if (!parseFunction(input, _functions)) {
 			return false;
@@ -255,12 +255,9 @@ bool Parser::innerParse(char const*& input, JIT::Scope* scope) {
 		return false;
 	}
 
-	return innerParse(input, scope);
+	return innerParse(input);
 }
 
 bool Parser::parse(char const* input) {
-	Scope* scope = new Scope();
-	bool res = innerParse(input, scope);
-	delete scope;
-	return res;
+	return innerParse(input);
 }

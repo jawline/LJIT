@@ -75,8 +75,25 @@ size_t Helper::jumpRelativeTopEqualZero(Assembler::ByteBuffer& buffer, int32_t d
     return addr;
 }
 
-void Helper::pushArgument(unsigned int num, Assembler::ByteBuffer& buffer) {
-    printf("Pushing an argument but I don't know how yet aaah\n");
+void Helper::functionEntryPushArgs(unsigned int num, Assembler::ByteBuffer& buffer) {
+    printf("Handling %i\n", num);
+    for (unsigned int i = 0; i < num; i++) {
+        switch (i) {
+            case 0:
+                buffer.insert((uint8_t) 0x57);
+                break;
+            default:
+                printf("Can't handle this many args\n");
+                return;
+        }
+    }
+}
+
+void Helper::functionExitDiscardArgs(unsigned int num, Assembler::ByteBuffer& buffer) {
+    for (unsigned int i = 0; i < num; i++) {
+        uint8_t addRsp8[] = { 0x48, 0x83, 0xC4, (uint8_t) sizeof(int64_t) };
+        buffer.insert(addRsp8, sizeof(addRsp8));
+    }
 }
 
 void Helper::pushNumber(int64_t value, ByteBuffer& buffer) {
@@ -159,13 +176,8 @@ void Helper::updateAddress(JFPTR ptr, size_t start, void* newAddress) {
     *((int64_t*)start_addr) = (int64_t) newAddress;
 }
 
-void Helper::setArgumentZeroScope(Assembler::ByteBuffer& buffer) {
-    uint8_t mvR12Rdi[] = { 0x4C, 0x89, 0xE7 };
-    buffer.insert(mvR12Rdi, sizeof(mvR12Rdi));
-}
-
 void Helper::pushArgumentTop(int argN, Assembler::ByteBuffer& buffer) {
-    uint8_t mvRbpRax[] { 0x48, 0x8B, 0x45, (uint8_t)(argN * 8)};
+    uint8_t mvRbpRax[] { 0x48, 0x8B, 0x45, (uint8_t)(-argN * 8)};
     buffer.insert(mvRbpRax, sizeof(mvRbpRax));
     pushBasicResult(buffer);
 }
