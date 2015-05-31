@@ -76,7 +76,6 @@ size_t Helper::jumpRelativeTopEqualZero(Assembler::ByteBuffer& buffer, int32_t d
 }
 
 void Helper::functionEntryPushArgs(unsigned int num, Assembler::ByteBuffer& buffer) {
-    printf("Handling %i\n", num);
     for (unsigned int i = 0; i < num; i++) {
         switch (i) {
             case 0:
