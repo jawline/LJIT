@@ -177,9 +177,17 @@ void Helper::updateAddress(JFPTR ptr, size_t start, void* newAddress) {
 }
 
 void Helper::pushArgumentTop(int argN, Assembler::ByteBuffer& buffer) {
-    uint8_t mvRbpRax[] { 0x48, 0x8B, 0x45, (uint8_t)(-argN * 8)};
-    buffer.insert(mvRbpRax, sizeof(mvRbpRax));
-    pushBasicResult(buffer);
+
+    if (argN == 0) {
+        buffer.insert((uint8_t)0x41);
+        buffer.insert((uint8_t)0x54);
+    } else {
+        printf("TODO: I AM BROKEN\n");
+        uint8_t mvRbpRax[] = { 0x48, 0x8B, 0x45, 8 };
+        buffer.insert(mvRbpRax, sizeof(mvRbpRax));
+        //buffer.insert((int32_t)(-argN * 8));
+        //pushBasicResult(buffer);
+    }
 }
 
 void Helper::setArgumentStackTop(unsigned int num, Assembler::ByteBuffer& buffer) {
