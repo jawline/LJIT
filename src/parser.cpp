@@ -67,7 +67,7 @@ SafeStatement Parser::parseFunctionCall(char const*& input, std::vector<std::str
 			} else {
 				printf("Cannot reach %s in this call (Perhaps it needs to be surrounded by parenthesis)\n", next.asString());
 			}
-			
+
 			CHECK(arg);
 			args.push_back(arg);
 		} else {
@@ -92,9 +92,6 @@ SafeStatement Parser::parseFunctionCall(char const*& input, std::vector<std::str
 		type = Divide;
 		numExpectedArgs = 2;
 	} else if (name.compare("if") == 0) {
-		type = If;
-		numExpectedArgs = 2;
-	} else if (name.compare("ifelse") == 0) {
 		type = If;
 		numExpectedArgs = 3;
 	} else if (name.compare("set") == 0) {

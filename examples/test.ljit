@@ -1,8 +1,8 @@
-function fact(n) -> (ifelse n (mul n (fact (sub n 1))) 1)
+function fact(n) -> (if n (mul n (fact (sub n 1))) 1)
 (fact 5)
 
-function even(n) -> (ifelse (n) (odd (sub n 1)) (1))
-function odd(n) -> (ifelse (n) (even (sub n 1)) (0))
+function even(n) -> (if n (odd (sub n 1)) (1))
+function odd(n) -> (if n (even (sub n 1)) (0))
 
 (even 20)
 (even 19)
