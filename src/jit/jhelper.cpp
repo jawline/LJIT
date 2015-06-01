@@ -228,6 +228,10 @@ void Helper::setArgumentStackTop(unsigned int num, Assembler::ByteBuffer& buffer
     }
 }
 
+void Helper::popResult(Assembler::ByteBuffer& buffer) {
+    buffer.insert((uint8_t)0x58);
+}
+
 JFPTR Helper::prepareFunctionPointer(ByteBuffer const& buffer) {
   //mmap some executable and writable memory and copy machine code into it
   void* mem = mmap(nullptr, buffer.current(), PROT_WRITE | PROT_EXEC, MAP_ANON | MAP_PRIVATE, -1, 0);

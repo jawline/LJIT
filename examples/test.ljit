@@ -1,2 +1,2 @@
 function fx (x) -> (print (mul (x) 2))
-(fx 15)
+(print (fx 15))

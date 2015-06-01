@@ -22,9 +22,10 @@ void Function::prepare(SafeStatement const& stmt) {
   Helper::insertPrologue(buffer);
 
   //Push all the args so they sit left to right from ebp
-  Helper::functionEntryPushArgs(_numArgs, buffer);
+  //Helper::functionEntryPushArgs(_numArgs, buffer);
   stmt->write(buffer, _unresolvedCallList);
-  Helper::functionExitDiscardArgs(_numArgs, buffer);
+  Helper::popResult(buffer);
+  //Helper::functionExitDiscardArgs(_numArgs, buffer);
   Helper::insertEpilogue(buffer);
   
   _storedFn = Helper::prepareFunctionPointer(buffer);
