@@ -65,8 +65,9 @@ SafeStatement Parser::parseFunctionCall(char const*& input, std::vector<std::str
 			if (getArg(next.asString(), argList) != -1) {
 				arg = parseArg(input, argList);
 			} else {
-				arg = parseFunctionCall(input, argList);
+				printf("Cannot reach %s in this call (Perhaps it needs to be surrounded by parenthesis)\n", next.asString());
 			}
+			
 			CHECK(arg);
 			args.push_back(arg);
 		} else {
