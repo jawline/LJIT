@@ -109,8 +109,7 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
       }
       size_t addressStart = Helper::callFunction(_callback ? _callback : ((void*)Callbacks::unresolved), buffer);
       if (_callback == nullptr) {
-        printf("Cannot produce nativecall, _callback unresolved\n");
-        printf("Adding to unresolved list\n");
+       //printf("Adding to unresolved list\n");
         unresolvedList.push_back(std::pair<Statement*, size_t>(this, addressStart));
       }
       break;
