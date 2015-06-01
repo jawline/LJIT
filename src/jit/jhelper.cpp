@@ -79,7 +79,20 @@ void Helper::functionEntryPushArgs(unsigned int num, Assembler::ByteBuffer& buff
     for (unsigned int i = 0; i < num; i++) {
         switch (i) {
             case 0:
+                //push rdi
                 buffer.insert((uint8_t) 0x57);
+                break;
+            case 1:
+                //push rsi
+                buffer.insert((uint8_t) 0x56);
+                break;
+            case 2:
+                //push rdx
+                buffer.insert((uint8_t) 0x52);
+                break;
+            case 3:
+                //push rcx
+                buffer.insert((uint8_t) 0x51);
                 break;
             default:
                 printf("Can't handle this many args\n");
@@ -180,11 +193,9 @@ void Helper::pushArgumentTop(int argN, Assembler::ByteBuffer& buffer) {
         buffer.insert((uint8_t)0x41);
         buffer.insert((uint8_t)0x54);
     } else {
-        printf("TODO: I AM BROKEN\n");
-        uint8_t mvRbpRax[] = { 0x48, 0x8B, 0x45, 8 };
-        buffer.insert(mvRbpRax, sizeof(mvRbpRax));
-        //buffer.insert((int32_t)(-argN * 8));
-        //pushBasicResult(buffer);
+        //push [ebp - (argN-1)*8]
+        uint8_t pushArg[] = { 0xFF, 0x75, (uint8_t)((-argN - 1) * 8) };
+        buffer.insert(pushArg, sizeof(pushArg));
     }
 }
 
