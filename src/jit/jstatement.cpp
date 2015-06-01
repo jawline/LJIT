@@ -88,6 +88,7 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
       
       //Rewrite the dummy relative locations to be the actual exit
       size_t exitLocation = buffer.current();
+
       auto elseJmpNextInstruction = elseAddr + sizeof(int32_t);
       auto exitJmpNextInstruction = exitAddr + sizeof(int32_t);
 
@@ -99,7 +100,7 @@ void Statement::write(Assembler::ByteBuffer& buffer, std::vector<std::pair<State
     case NativeCallback: {
 
       //TODO: SCARY! This will break with over 6 args, work out a nice way to do this
-      printf("TODO: NativeCallback arg set is broken with over 6 args\n");
+      //printf("TODO: NativeCallback arg set is broken with over 6 args\n");
       for (unsigned int i = 0; i < _args.size(); i++) {
         _args[i]->write(buffer, unresolvedList);
       }

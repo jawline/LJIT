@@ -22,10 +22,10 @@ void Function::prepare(SafeStatement const& stmt) {
   Helper::insertPrologue(buffer);
 
   //Push all the args so they sit left to right from ebp
-  //Helper::functionEntryPushArgs(_numArgs, buffer);
+  Helper::functionEntryPushArgs(_numArgs, buffer);
   stmt->write(buffer, _unresolvedCallList);
   Helper::popResult(buffer);
-  //Helper::functionExitDiscardArgs(_numArgs, buffer);
+  Helper::functionExitDiscardArgs(_numArgs, buffer);
   Helper::insertEpilogue(buffer);
   
   _storedFn = Helper::prepareFunctionPointer(buffer);
@@ -43,10 +43,7 @@ void Function::rewriteCallbacks() {
 	}
 
 	for (unsigned int i = 0; i < _unresolvedCallList.size(); i++) {
-		if (!_unresolvedCallList[i].first->getCallback()) {
-			printf("STILL NOT ABLE TO RESOLVE ADDRESS\n");
-		} else {
-			printf("RewriteCallbacks resolved a callback\n");
+		if (_unresolvedCallList[i].first->getCallback()) {
 			Helper::updateAddress(_storedFn, _unresolvedCallList[i].second, _unresolvedCallList[i].first->getCallback());
 		}
 	}
