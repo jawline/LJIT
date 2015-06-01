@@ -100,7 +100,6 @@ void Helper::pushNumber(int64_t value, ByteBuffer& buffer) {
     uint8_t mrax[] = { 0x48, 0xB8 };
     buffer.insert(mrax, sizeof(mrax));
     buffer.insert((int64_t) value);
-
     pushBasicResult(buffer);
 }
 
