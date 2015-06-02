@@ -178,23 +178,25 @@ SafeStatement Parser::parseBlock(char const*& input, std::vector<std::string> co
 }
 
 bool Parser::parseFunctionArguments(char const*& input, std::vector<std::string>& argList) {
-
-	//discard lparen
-	Token next = _tokeniser.nextToken(input);
-
-	while (true) {
-		next = _tokeniser.nextToken(input);
-		if (next.id() == ID) {
-			argList.push_back(next.asString());
-		} else if (next.id() == RPAREN) {
-			break;
-		} else {
-			printf("Expected arg name or RPAREN\n");
-			return false;
-		}
+	
+	next = _tokeniser.nextToken(input);
+	
+	if (next.id() != ID) {
+		argList.push_back(next.asString());
 	}
-
-	return true;
+	
+	argList.push_back(next.asString());
+	
+	next = _tokeniser.nextToken(input);
+	
+	if (next.id() == RPAREN) {
+		return true;
+	} else if (next.id() == COMMA) {
+		return parseFunctionArguments(input, argList);
+	} else {
+		print("Expected RPAREN or COMMA\n");
+		return false;
+	}
 }
 
 bool Parser::parseFunction(char const*& input, std::map<std::string, SafeFunction>& functionList) {
@@ -215,6 +217,8 @@ bool Parser::parseFunction(char const*& input, std::map<std::string, SafeFunctio
 	next = _tokeniser.peekToken(input);
 
 	if (next.id() == LPAREN) {
+		//discard lparen
+		_tokeniser.nextToken(input);
 		if (!parseFunctionArguments(input, args)) {
 			return false;
 		}
