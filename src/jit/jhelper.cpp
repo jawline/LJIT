@@ -76,21 +76,23 @@ size_t Helper::jumpRelativeTopEqualZero(Assembler::ByteBuffer& buffer, int32_t d
 }
 
 void Helper::functionEntryPushArgs(unsigned int num, Assembler::ByteBuffer& buffer) {
-    for (unsigned int i = 0; i < num; i++) {
+    
+    //The first arg is moved into r12
+    if (num < 2) {
+        return;
+    }
+
+    for (unsigned int i = 0; i < num - 1; i++) {
         switch (i) {
             case 0:
-                //push rdi
-                buffer.insert((uint8_t) 0x57);
-                break;
-            case 1:
                 //push rsi
                 buffer.insert((uint8_t) 0x56);
                 break;
-            case 2:
+            case 1:
                 //push rdx
                 buffer.insert((uint8_t) 0x52);
                 break;
-            case 3:
+            case 2:
                 //push rcx
                 buffer.insert((uint8_t) 0x51);
                 break;
@@ -102,7 +104,13 @@ void Helper::functionEntryPushArgs(unsigned int num, Assembler::ByteBuffer& buff
 }
 
 void Helper::functionExitDiscardArgs(unsigned int num, Assembler::ByteBuffer& buffer) {
-    for (unsigned int i = 0; i < num; i++) {
+
+    //First argument is put in r12, discard others
+    if (num < 2) {
+        return;
+    }
+
+    for (unsigned int i = 0; i < num - 1; i++) {
         uint8_t addRsp8[] = { 0x48, 0x83, 0xC4, (uint8_t) sizeof(int64_t) };
         buffer.insert(addRsp8, sizeof(addRsp8));
     }
@@ -188,7 +196,6 @@ void Helper::updateAddress(JFPTR ptr, size_t start, void* newAddress) {
 }
 
 void Helper::pushArgumentTop(int argN, Assembler::ByteBuffer& buffer) {
-
     if (argN == 0) {
         buffer.insert((uint8_t)0x41);
         buffer.insert((uint8_t)0x54);
