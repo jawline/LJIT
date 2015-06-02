@@ -96,6 +96,15 @@ void Helper::functionEntryPushArgs(unsigned int num, Assembler::ByteBuffer& buff
                 //push rcx
                 buffer.insert((uint8_t) 0x51);
                 break;
+            case 3:
+                //push r8
+                buffer.insert((uint8_t) 0x41);
+                buffer.insert((uint8_t) 0x50);
+                break;
+            case 4:
+                //push r9
+                buffer.insert((uint8_t) 0x41);
+                buffer.insert((uint8_t) 0x51);
             default:
                 printf("Can't handle this many args\n");
                 return;
