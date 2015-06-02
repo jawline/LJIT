@@ -4,7 +4,7 @@ function fact(n) -> (if n (* n (fact (- n 1))) 1)
 
 (even 100000)
 (odd 100000)
-(fact 100000)
+(fact 25)
 
 function fn(x,y,z) -> (* x (* y z))
 (fn 5 10 3)
