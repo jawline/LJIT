@@ -209,8 +209,15 @@ void Helper::pushArgumentTop(int argN, Assembler::ByteBuffer& buffer) {
         buffer.insert((uint8_t)0x54);
     } else {
         //push [ebp - (argN-1)*8]
-        uint8_t pushArg[] = { 0xFF, 0x75, (uint8_t)((-argN - 1) * 8) };
-        buffer.insert(pushArg, sizeof(pushArg));
+        //If I can fit the offset in a single byte use a shorter instruction
+        //TODO: Test this logic. It's very unlikely to be hit (16 argument function)
+        if ((-argN - 1) * 8 > -128) {
+            uint8_t pushArg[] = { 0xFF, 0x75, (int8_t)((-argN - 1) * 8) };
+            buffer.insert(pushArg, sizeof(pushArg));
+        } else {
+            uint8_t pushArg[] = { 0xFF, 0xB5, (int32_t)((-argN - 1) * 8) };
+            buffer.insert(pushArg, sizeof(pushArg));
+        }
     }
 }
 
