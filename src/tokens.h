@@ -11,6 +11,7 @@ namespace Assembler {
 	typedef enum {
 		ID,
 		NUM,
+		COMMA,
 		ARROW,
 		LPAREN,
 		RPAREN,
