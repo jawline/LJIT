@@ -79,16 +79,16 @@ SafeStatement Parser::parseFunctionCall(char const*& input, std::vector<std::str
 	void* callback = nullptr;
 	int numExpectedArgs;
 	
-	if (name.compare("add") == 0) {
+	if (name.compare("+") == 0) {
 		type = Add;
 		numExpectedArgs = 2;
-	} else if (name.compare("sub") == 0) {
+	} else if (name.compare("-") == 0) {
 		type = Subtract;
 		numExpectedArgs = 2;
-	} else if (name.compare("mul") == 0) {
+	} else if (name.compare("*") == 0) {
 		type = Multiply;
 		numExpectedArgs = 2;
-	} else if (name.compare("div") == 0) {
+	} else if (name.compare("/") == 0) {
 		type = Divide;
 		numExpectedArgs = 2;
 	} else if (name.compare("if") == 0) {
