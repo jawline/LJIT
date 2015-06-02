@@ -120,8 +120,9 @@ void Helper::functionExitDiscardArgs(unsigned int num, Assembler::ByteBuffer& bu
     }
 
     //Add sizeof(int64_t) * (num-1) to rsp (Equivilent to popping num-1 times)
-    uint8_t addRsp[] = { 0x48, 0x81, 0xC4,(int32_t)(sizeof(int64_t) * num - 1)};
+    uint8_t addRsp[] = { 0x48, 0x81, 0xC4 };
     buffer.insert(addRsp, sizeof(addRsp));
+    buffer.insert((int32_t)(sizeof(int64_t) * num - 1));
 }
 
 void Helper::pushNumber(int64_t value, ByteBuffer& buffer) {
@@ -212,11 +213,12 @@ void Helper::pushArgumentTop(int argN, Assembler::ByteBuffer& buffer) {
         //If I can fit the offset in a single byte use a shorter instruction
         //TODO: Test this logic. It's very unlikely to be hit (16 argument function)
         if ((-argN - 1) * 8 > -128) {
-            uint8_t pushArg[] = { 0xFF, 0x75, (int8_t)((-argN - 1) * 8) };
+            uint8_t pushArg[] = { 0xFF, 0x75, (uint8_t)((-argN - 1) * 8) };
             buffer.insert(pushArg, sizeof(pushArg));
         } else {
-            uint8_t pushArg[] = { 0xFF, 0xB5, (int32_t)((-argN - 1) * 8) };
+            uint8_t pushArg[] = { 0xFF, 0xB5};
             buffer.insert(pushArg, sizeof(pushArg));
+            buffer.insert((int32_t)((-argN - 1) * 8));
         }
     }
 }

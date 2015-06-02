@@ -179,7 +179,7 @@ SafeStatement Parser::parseBlock(char const*& input, std::vector<std::string> co
 
 bool Parser::parseFunctionArguments(char const*& input, std::vector<std::string>& argList) {
 	
-	next = _tokeniser.nextToken(input);
+	Token next = _tokeniser.nextToken(input);
 	
 	if (next.id() != ID) {
 		argList.push_back(next.asString());
@@ -194,7 +194,7 @@ bool Parser::parseFunctionArguments(char const*& input, std::vector<std::string>
 	} else if (next.id() == COMMA) {
 		return parseFunctionArguments(input, argList);
 	} else {
-		print("Expected RPAREN or COMMA\n");
+		printf("Expected RPAREN or COMMA near %s\n", next.asString());
 		return false;
 	}
 }
@@ -227,7 +227,7 @@ bool Parser::parseFunction(char const*& input, std::map<std::string, SafeFunctio
 	next = _tokeniser.nextToken(input);
 	
 	if (next.id() != ARROW) {
-		printf("Expected arrow\n");
+		printf("Expected arrow near %s\n", next.asString());
 		return false;
 	}
 	
