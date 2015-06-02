@@ -84,6 +84,18 @@ Token Tokeniser::peekToken(char const* input, size_t& len) {
 	} else if (strncmp(input, ")", 1) == 0) {
 		result = Token(RPAREN, input, 1);
 		len = 1;
+	} else if (strncmp(input, "+", 1) == 0) {
+		result = Token(ID, input, 1);
+		len = 1;
+	} else if (strncmp(input, "-", 1) == 0) {
+		result = Token(ID, input, 1);
+		len = 1;
+	} else if (strncmp(input, "*", 1) == 0) {
+		result = Token(ID, input, 1);
+		len = 1;
+	} else if (strncmp(input, "/", 1) == 0) {
+		result = Token(ID, input, 1);
+		len = 1;
 	} else if (strncmp(input, "->", 2) == 0) {
 		result = Token(ARROW, input, 2);
 		len = 2;
