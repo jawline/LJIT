@@ -110,6 +110,7 @@ void Helper::functionExitDiscardArgs(unsigned int num, Assembler::ByteBuffer& bu
         return;
     }
 
+    //TODO: as an optimization just add sizeof(int64_t) * num-1
     for (unsigned int i = 0; i < num - 1; i++) {
         uint8_t addRsp8[] = { 0x48, 0x83, 0xC4, (uint8_t) sizeof(int64_t) };
         buffer.insert(addRsp8, sizeof(addRsp8));
