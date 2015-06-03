@@ -28,10 +28,11 @@ bool Parser::resolveAll() {
 				printf("Num args differs from expected\n");
 				return false;
 			}
+			
 			_unresolved[i].second->updateCallback((void*)_functions[_unresolved[i].first]->getFnPtr());
+		
+			//Remove updated item and offset i to compensate
 			_unresolved.erase(_unresolved.begin() + i);
-			//Index of the next item is now i
-			//i-- offsets the change
 			i--;
 		}
 	}
