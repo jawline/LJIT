@@ -30,7 +30,9 @@ bool Parser::resolveAll() {
 			}
 			_unresolved[i].second->updateCallback((void*)_functions[_unresolved[i].first]->getFnPtr());
 			_unresolved.erase(_unresolved.begin() + i);
-			return resolveAll();
+			//Index of the next item is now i
+			//i-- offsets the change
+			i--;
 		}
 	}
 	return true;
