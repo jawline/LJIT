@@ -14,11 +14,7 @@ Parser::~Parser() {}
 #define CHECK(x) if (!x) { return nullptr; }
 
 SafeStatement Parser::parseAtom(char const*& input) {
-	Token next = _tokeniser.nextToken(input);
-	if (next.id() != NUM) {
-		return nullptr;
-	}
-	return SafeStatement(new Statement(next.asInt()));
+	return _tokeniser.nextToken(input).id() == NUM ? SafeStatement(new Statement(next.asInt())) : nullptr;
 }
 
 bool Parser::resolveAll() {
