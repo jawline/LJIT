@@ -1,7 +1,6 @@
 function even(n) -> (if n (odd (- n 1)) 1)
 function odd(n) -> (if n (even (- n 1)) 0)
 function fact(n) -> (if n (* n (fact (- n 1))) 1)
-function fibs(n) -> (if (= n 1) (+ (fibs (- n 1)) (fibs (- n 2))))
 
 (even 100000)
 (odd 100000)
