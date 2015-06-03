@@ -45,6 +45,9 @@ void Function::rewriteCallbacks() {
 	for (unsigned int i = 0; i < _unresolvedCallList.size(); i++) {
 		if (_unresolvedCallList[i].first->getCallback()) {
 			Helper::updateAddress(_storedFn, _unresolvedCallList[i].second, _unresolvedCallList[i].first->getCallback());
+			_unresolvedCallList.erase(_unresolvedCallList.begin() + i);
+			//Drop back by 1 as the next item will now hold this items index
+			i--;
 		}
 	}
 }
