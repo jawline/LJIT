@@ -43,6 +43,7 @@ SafeStatement Parser::parseFunctionCall(char const*& input, std::vector<std::str
 	//Get function call name
 	Token next = _tokeniser.nextToken(input);
 
+	Token nameToken = next;
 	string name = next.asString();
 
 	std::vector<SafeStatement> args;
@@ -67,7 +68,7 @@ SafeStatement Parser::parseFunctionCall(char const*& input, std::vector<std::str
 			if (getArg(next.asString(), argList) != -1) {
 				arg = parseArg(input, argList);
 			} else {
-				printf("Cannot reach %s in this call (Perhaps it needs to be surrounded by parenthesis)\n", next.asString());
+				printf("Cannot reach %s in this call on line %i (Perhaps it needs to be surrounded by parenthesis)\n", next.asString(), next.line());
 			}
 
 			CHECK(arg);
@@ -115,7 +116,7 @@ SafeStatement Parser::parseFunctionCall(char const*& input, std::vector<std::str
 	}
 	
 	if (numExpectedArgs != -1 && args.size() != numExpectedArgs) {
-		printf("Expected %i args got %li on %s\n", numExpectedArgs, args.size(), name.c_str());
+		printf("Expected %i args got %li near %s\n", numExpectedArgs, args.size(), nameToken.debugInfo().c_str());
 		return nullptr;
 	}
 
