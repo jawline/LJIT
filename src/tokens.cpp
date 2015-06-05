@@ -11,16 +11,19 @@ using namespace Assembler;
 
 Token::Token() {
 	_id = INVALID_TOKEN;
+	_line = 0;
 }
 
-Token::Token(TOKEN_ID id) {
+Token::Token(TOKEN_ID id, unsigned int line) {
 	_id = id;
 	_data = "";
+	_line = line;
 }
 
-Token::Token(TOKEN_ID id, char const* input, size_t len) {
+Token::Token(TOKEN_ID id, char const* input, size_t len, unsigned int line) {
 	_id = id;
 	_data = std::string(input, len);
+	_line = line;
 }
 
 Token::~Token() {}
@@ -123,6 +126,6 @@ Token Tokeniser::peekToken(char const* input, size_t& len) {
 	return result;
 }
 
-int Tokeniser::getCurrentLine() const {
+unsigned int Tokeniser::getCurrentLine() const {
 	return _numProcessedLines;
 }
