@@ -120,6 +120,9 @@ Token Tokeniser::peekToken(char const* input, size_t& len) {
 	} else {
 		printf("%s is invalid\n", input);
 	}
-
 	return result;
+}
+
+int Tokeniser::getCurrentLine() const {
+	return _numProcessedLines;
 }
