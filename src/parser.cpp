@@ -59,9 +59,9 @@ SafeStatement Parser::parseFunctionCall(char const*& input, std::vector<std::str
 			CHECK(arg);
 			args.push_back(arg);
 		} else if (next.id() == ID) {
+			
 			//Peek the name
 			next = _tokeniser.peekToken(input);
-
 			SafeStatement arg = nullptr;
 
 			if (getArg(next.asString(), argList) != -1) {
