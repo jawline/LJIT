@@ -22,7 +22,9 @@ bool Parser::resolveAll() {
 	for (unsigned int i = 0; i < _unresolved.size(); i++) {
 		if (_functions.find(_unresolved[i].first) != _functions.end()) {
 			if (_unresolved[i].second->getNumArgs() != _functions[_unresolved[i].first]->getNumArgs()) {
-				printf("Num args differs from expected\n");
+				printf("The number of arguments supplied to the function call was %i but %i was expected\n",
+					_unresolved[i].second->getNumArgs(),
+					_functions[_unresolved[i].first]->getNumArgs());
 				return false;
 			}
 			
