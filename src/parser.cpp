@@ -164,7 +164,7 @@ SafeStatement Parser::parseBlock(char const*& input, std::vector<std::string> co
 	} else if (next.id() == NUM) {
 		result = parseAtom(input);
 	} else {
-		printf("Expected ID or NUM in block\n");
+		printf("Expected ID or NUM in block near %s\n", next.debugInfo().c_str());
 		result = nullptr;
 	}
 
@@ -173,7 +173,7 @@ SafeStatement Parser::parseBlock(char const*& input, std::vector<std::string> co
 	next = _tokeniser.nextToken(input);
 
 	if (next.id() != RPAREN) {
-		printf("Expected RPAREN got %s\n", next.asString());
+		printf("Expected RPAREN near %s\n", next.tokenInfo().c_str());
 		return nullptr;
 	}
 
