@@ -49,6 +49,10 @@ unsigned int Token::line() const {
 	return _line;
 }
 
+std::string Token::debugInfo() const {
+	return std::string(asString()) + " near line " + std::to_string(line());
+}
+
 Tokeniser::Tokeniser() {
 	regexParse(&idRegex, "[a-zA-Z][a-zA-Z0-9_]*");
 	regexParse(&intRegex, "-?[0-9]+");
