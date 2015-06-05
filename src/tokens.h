@@ -24,6 +24,7 @@ namespace Assembler {
 	private:
 		TOKEN_ID _id;
 		std::string _data;
+		unsigned int _line;
 
 	public:
 		Token();
@@ -40,7 +41,7 @@ namespace Assembler {
 	private:
 		regex idRegex;
 		regex intRegex;
-		int _numProcessedLines;
+		unsigned int _numProcessedLines;
 
 		char const* skipWhite(char const* input);
 	public:
@@ -50,7 +51,7 @@ namespace Assembler {
 		Token peekToken(char const* input);
 		Token nextToken(char const*& input);
 		void resetLines();
-		int getCurrentLine() const;
+		unsigned int getCurrentLine() const;
 	};
 }
 
