@@ -208,7 +208,7 @@ bool Parser::parseFunction(char const*& input, std::map<std::string, SafeFunctio
 	next = _tokeniser.nextToken(input);
 	
 	if (next.id() != ID) {
-		printf("Expected function name\n");
+		printf("Expected function name not %s near %s\n", next.asString(), next.debugInfo().c_str());
 		return false;
 	}
 
@@ -269,7 +269,7 @@ bool Parser::innerParse(char const*& input) {
 			it->second->rewriteCallbacks();
 		}
 	} else {
-		printf("Expected LPAREN\n");
+		printf("Expected LPAREN near %s\n", next.debugInfo().c_str());
 		return false;
 	}
 
