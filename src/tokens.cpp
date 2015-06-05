@@ -83,43 +83,43 @@ void Tokeniser::resetLines() {
 }
 
 Token Tokeniser::peekToken(char const* input, size_t& len) {
-	Token result = Token(INVALID_TOKEN);
+	Token result = Token(INVALID_TOKEN, getCurrentLine());
 	input = skipWhite(input);
 
 	if (*input == '\0') {
-		result = Token(TOKEN_EOF);
+		result = Token(TOKEN_EOF, getCurrentLine());
 		len = 0;
 	} else if (strncmp(input, "(", 1) == 0) {
-		result = Token(LPAREN, input, 1);
+		result = Token(LPAREN, input, 1, getCurrentLine());
 		len = 1;
 	} else if (strncmp(input, ")", 1) == 0) {
-		result = Token(RPAREN, input, 1);
+		result = Token(RPAREN, input, 1, getCurrentLine());
 		len = 1;
 	} else if (strncmp(input, "->", 2) == 0) {
-		result = Token(ARROW, input, 2);
+		result = Token(ARROW, input, 2, getCurrentLine());
 		len = 2;
 	} else if (strncmp(input, ",", 1) == 0) {
-		result = Token(COMMA, input, 1);
+		result = Token(COMMA, input, 1, getCurrentLine());
 		len = 1;
 	} else if (strncmp(input, "function", 8) == 0) {
-		result = Token(FUNCTION, input, 8);
+		result = Token(FUNCTION, input, 8, getCurrentLine());
 		len = 8;
 	} else if (strncmp(input, "+", 1) == 0) {
-		result = Token(ID, input, 1);
+		result = Token(ID, input, 1, getCurrentLine());
 		len = 1;
 	} else if (strncmp(input, "-", 1) == 0) {
-		result = Token(ID, input, 1);
+		result = Token(ID, input, 1, getCurrentLine());
 		len = 1;
 	} else if (strncmp(input, "*", 1) == 0) {
-		result = Token(ID, input, 1);
+		result = Token(ID, input, 1, getCurrentLine());
 		len = 1;
 	} else if (strncmp(input, "/", 1) == 0) {
-		result = Token(ID, input, 1);
+		result = Token(ID, input, 1, getCurrentLine());
 		len = 1;
 	} else if ((len = nfaMatches(idRegex.start, input)) > 0) {
-		result = Token(ID, input, len);
+		result = Token(ID, input, len, getCurrentLine());
 	} else if ((len = nfaMatches(intRegex.start, input)) > 0) {
-		result = Token(NUM, input, len);
+		result = Token(NUM, input, len, getCurrentLine());
 	} else {
 		printf("%s is invalid\n", input);
 	}
