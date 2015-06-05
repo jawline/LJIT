@@ -36,6 +36,7 @@ namespace Assembler {
 		char const* asString() const;
 		int asInt() const;
 		unsigned int line() const;
+		std::string debugInfo() const;
 	};
 
 	class Tokeniser {
