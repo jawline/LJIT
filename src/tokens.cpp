@@ -53,7 +53,11 @@ Tokeniser::~Tokeniser() {
 }
 
 char const* Tokeniser::skipWhite(char const* input) {
-  for (; *input && isspace(*input); input++) {}
+  for (; *input && isspace(*input); input++) {
+  	if (*input == '\n') {
+  		_numProcessedLines++;
+  	}
+  }
   return input;
 }
 
@@ -69,6 +73,10 @@ Token Tokeniser::peekToken(char const* input) {
 	input = skipWhite(input);
 	size_t len;
 	return peekToken(input, len);
+}
+
+void Tokeniser::resetLines() {
+	_numProcessedLines = 0;
 }
 
 Token Tokeniser::peekToken(char const* input, size_t& len) {
