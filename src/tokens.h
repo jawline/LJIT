@@ -50,6 +50,7 @@ namespace Assembler {
 		Token peekToken(char const* input);
 		Token nextToken(char const*& input);
 		void resetLines();
+		int getCurrentLine() const;
 	};
 }
 
