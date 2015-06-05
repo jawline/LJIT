@@ -40,6 +40,7 @@ namespace Assembler {
 	private:
 		regex idRegex;
 		regex intRegex;
+		int _numProcessedLines;
 
 		char const* skipWhite(char const* input);
 	public:
@@ -48,6 +49,7 @@ namespace Assembler {
 		Token peekToken(char const* input, size_t& len);
 		Token peekToken(char const* input);
 		Token nextToken(char const*& input);
+		void resetLines();
 	};
 }
 
