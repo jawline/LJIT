@@ -27,8 +27,8 @@ namespace Assembler {
 
 	public:
 		Token();
-		Token(TOKEN_ID id);
-		Token(TOKEN_ID id, char const* input, size_t len);
+		Token(TOKEN_ID id, unsigned int line);
+		Token(TOKEN_ID id, char const* input, size_t len, unsigned int line);
 		~Token();
 
 		TOKEN_ID id() const;
