@@ -274,5 +274,6 @@ bool Parser::innerParse(char const*& input) {
 }
 
 bool Parser::parse(char const* input) {
+	_tokeniser.resetLines();
 	return innerParse(input);
 }
