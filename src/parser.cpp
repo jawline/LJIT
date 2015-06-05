@@ -197,7 +197,7 @@ bool Parser::parseFunctionArguments(char const*& input, std::vector<std::string>
 	} else if (next.id() == COMMA) {
 		return parseFunctionArguments(input, argList);
 	} else {
-		printf("Expected RPAREN or COMMA near %s\n", next.asString());
+		printf("Expected RPAREN or COMMA near %s\n", next.debugInfo().c_str());
 		return false;
 	}
 }
@@ -230,7 +230,7 @@ bool Parser::parseFunction(char const*& input, std::map<std::string, SafeFunctio
 	next = _tokeniser.nextToken(input);
 	
 	if (next.id() != ARROW) {
-		printf("Expected arrow near %s\n", next.asString());
+		printf("Expected arrow near %s\n", next.debugInfo().c_str());
 		return false;
 	}
 	
