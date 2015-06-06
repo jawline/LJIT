@@ -50,7 +50,7 @@ unsigned int Token::line() const {
 }
 
 std::string Token::debugInfo() const {
-	return std::string(asString()) + " near line " + std::to_string(line());
+	return std::string(asString()) + " on line " + std::to_string(line());
 }
 
 Tokeniser::Tokeniser() {

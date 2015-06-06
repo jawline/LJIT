@@ -22,7 +22,7 @@ bool Parser::resolveAll() {
 	for (unsigned int i = 0; i < _unresolved.size(); i++) {
 		if (_functions.find(_unresolved[i].first) != _functions.end()) {
 			if (_unresolved[i].second->getNumArgs() != _functions[_unresolved[i].first]->getNumArgs()) {
-				printf("The number of arguments supplied to the function call was %i but %i was expected\n",
+				printf("The number of arguments supplied to the function call was %i but %li was expected\n",
 					_unresolved[i].second->getNumArgs(),
 					_functions[_unresolved[i].first]->getNumArgs());
 				return false;
@@ -173,7 +173,7 @@ SafeStatement Parser::parseBlock(char const*& input, std::vector<std::string> co
 	next = _tokeniser.nextToken(input);
 
 	if (next.id() != RPAREN) {
-		printf("Expected RPAREN near %s\n", next.tokenInfo().c_str());
+		printf("Expected RPAREN near %s\n", next.debugInfo().c_str());
 		return nullptr;
 	}
 
