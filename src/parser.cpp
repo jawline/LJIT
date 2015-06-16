@@ -220,7 +220,6 @@ bool Parser::parseFunction(char const*& input, std::map<std::string, SafeFunctio
 	next = _tokeniser.peekToken(input);
 
 	if (next.id() == LPAREN) {
-		//discard lparen
 		_tokeniser.nextToken(input);
 		if (!parseFunctionArguments(input, args)) {
 			return false;
