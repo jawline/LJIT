@@ -11,7 +11,7 @@ int writeToFile(Assembler::ByteBuffer const& buffer, char const* filename) {
 		return -1;
 	}
 
-	if (buffer.current() != 0) {
+	if (buffer.current()) {
 		if (fwrite(buffer.raw(), buffer.current(), 1, fout) != 1) {
 			printf("Could not write to file %s\n", filename);
 			fclose(fout);
